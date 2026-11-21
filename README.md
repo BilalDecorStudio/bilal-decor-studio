@@ -342,4 +342,4 @@ When continuing this project in future sessions or another Antigravity instance,
 ---
 
 > **Handoff Note for Incoming Agent:**  
-> Bilal Decor Studio is a live, production-tested B2B web application. When adding new features, maintain the warm ivory & royal gold visual standard, use natural everyday Roman Urdu, and respect the server-side PBKDF2 security architecture.
+> Bilal Decor Studio is a live, production-tested B2B web application. When adding new features, maintain the warm ivory & royal gold visual standard, use natural everyday Roman Urdu, and respect the server-side PBKDF2 security architecture.s
