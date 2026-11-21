@@ -833,11 +833,11 @@ Aap website par apna PIN laga kar live order track kar sakte hain.
                         </div>
                     </div>
 
-                    <button onclick="Admin.openEditProductModal('${prod.id}')" class="px-3 py-1.5 rounded-lg bg-amber-50 hover:bg-amber-100 text-amber-900 border border-amber-300 font-bold text-xs transition flex items-center space-x-1 shadow-xs" title="Design Edit Karein">
+                    <button type="button" onclick="Admin.openEditProductModal('${prod.id}')" class="px-3 py-1.5 rounded-lg bg-amber-50 hover:bg-amber-100 text-amber-900 border border-amber-300 font-bold text-xs transition flex items-center space-x-1 shadow-xs cursor-pointer" title="Design Edit Karein">
                         <span>✏️ Edit</span>
                     </button>
 
-                    <button onclick="Admin.deleteProduct('${prod.id}')" class="p-1.5 rounded-lg text-rose-600 hover:text-rose-800 hover:bg-rose-50 transition border border-transparent hover:border-rose-200" title="Delete Product">
+                    <button type="button" onclick="Admin.deleteProduct('${prod.id}')" class="p-1.5 rounded-lg text-rose-600 hover:text-rose-800 hover:bg-rose-50 transition border border-transparent hover:border-rose-200 cursor-pointer" title="Delete Product">
                         🗑️
                     </button>
                 </div>
@@ -846,41 +846,67 @@ Aap website par apna PIN laga kar live order track kar sakte hain.
     },
 
     openEditProductModal(prodId) {
-        const products = Store.getProducts();
-        const prod = products.find(p => p.id === prodId);
-        if (!prod) {
-            alert("Design nahi mila.");
-            return;
+        try {
+            const products = Store.getProducts();
+            const prod = products.find(p => String(p.id) === String(prodId));
+            if (!prod) {
+                alert("Design nahi mila.");
+                return;
+            }
+
+            const modal = document.getElementById('editProductModal');
+            if (!modal) {
+                alert("Edit modal nahi mila.");
+                return;
+            }
+
+            const setVal = (id, val) => {
+                const el = document.getElementById(id);
+                if (el) el.value = (val !== undefined && val !== null) ? val : '';
+            };
+
+            setVal('editProdId', prod.id);
+            setVal('editProdTitleRoman', prod.titleRoman || prod.title || '');
+            setVal('editProdTitleEn', prod.title || '');
+            setVal('editProdCategory', prod.category || 'stage');
+            setVal('editProdRate', prod.ratePerSqFt || 60);
+            setVal('editProdBadge', prod.badge || '');
+            setVal('editProdFabricType', prod.fabricType || '');
+            setVal('editProdDefaultLength', prod.defaultLength || 40);
+            setVal('editProdDefaultWidth', prod.defaultWidth || 25);
+            setVal('editProdVideo', prod.videoUrl || '');
+            setVal('editProdDesc', prod.description || '');
+
+            // Initialize multiple images for editing safely
+            this.editProductImages = (Array.isArray(prod.images) && prod.images.length > 0)
+                ? [...prod.images]
+                : (prod.images ? [prod.images] : (prod.image ? [prod.image] : ["assets/images/royal_gold_ceiling.jpg"]));
+            this.renderEditProductImagesList();
+
+            modal.classList.remove('hidden');
+            modal.style.display = 'flex';
+            document.body.classList.add('overflow-hidden');
+
+            // Scroll modal back to top
+            modal.scrollTop = 0;
+            if (modal.querySelector) {
+                const innerCard = modal.querySelector('div');
+                if (innerCard) innerCard.scrollTop = 0;
+            }
+        } catch (err) {
+            console.error("Error in openEditProductModal:", err);
+            if (typeof alert !== 'undefined') {
+                alert("Design edit karte waqt error aaya: " + err.message);
+            }
         }
-
-        const modal = document.getElementById('editProductModal');
-        if (!modal) return;
-
-        document.getElementById('editProdId').value = prod.id;
-        document.getElementById('editProdTitleRoman').value = prod.titleRoman || '';
-        document.getElementById('editProdTitleEn').value = prod.title || '';
-        document.getElementById('editProdCategory').value = prod.category || 'stage';
-        document.getElementById('editProdRate').value = prod.ratePerSqFt || 60;
-        document.getElementById('editProdBadge').value = prod.badge || '';
-        document.getElementById('editProdFabricType').value = prod.fabricType || '';
-        document.getElementById('editProdDefaultLength').value = prod.defaultLength || 40;
-        document.getElementById('editProdDefaultWidth').value = prod.defaultWidth || 25;
-        document.getElementById('editProdVideo').value = prod.videoUrl || '';
-        document.getElementById('editProdDesc').value = prod.description || '';
-
-        // Initialize multiple images for editing
-        this.editProductImages = (Array.isArray(prod.images) && prod.images.length > 0)
-            ? [...prod.images]
-            : (prod.images ? [prod.images] : (prod.image ? [prod.image] : ["assets/images/royal_gold_ceiling.jpg"]));
-        this.renderEditProductImagesList();
-
-        modal.classList.remove('hidden');
-        document.body.classList.add('overflow-hidden');
     },
 
     closeEditProductModal() {
         const modal = document.getElementById('editProductModal');
-        if (modal) modal.classList.add('hidden');
+        if (modal) {
+            modal.classList.add('hidden');
+            modal.style.display = 'none';
+        }
         document.body.classList.remove('overflow-hidden');
     },
 

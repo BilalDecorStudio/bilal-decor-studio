@@ -84,7 +84,7 @@ const Tracker = {
             const statusBadge = this.getStatusBadge(order.status);
             const firstItem = order.items && order.items[0] ? order.items[0] : null;
             return `
-                <div class="luxury-card p-5 rounded-2xl bg-white border border-amber-300/60 shadow-sm hover:shadow-md transition">
+                <div class="luxury-card p-5 rounded-2xl bg-white border border-amber-300/60 shadow-sm hover:shadow-md transition w-72 sm:w-80 shrink-0 flex flex-col justify-between">
                     <div class="flex items-center justify-between mb-3">
                         <span class="font-mono text-xs px-2.5 py-1 rounded bg-amber-100 text-amber-900 font-extrabold border border-amber-200">
                             #${order.orderId}
