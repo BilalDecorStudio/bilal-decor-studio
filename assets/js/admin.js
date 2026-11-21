@@ -833,8 +833,13 @@ Aap website par apna PIN laga kar live order track kar sakte hain.
                         </div>
                     </div>
 
-                    <button type="button" onclick="Admin.openEditProductModal('${prod.id}')" class="px-3 py-1.5 rounded-lg bg-amber-50 hover:bg-amber-100 text-amber-900 border border-amber-300 font-bold text-xs transition flex items-center space-x-1 shadow-xs cursor-pointer" title="Design Edit Karein">
-                        <span>✏️ Edit</span>
+                    <button type="button" 
+                            onclick="Admin.openEditProductModal('${prod.id}')" 
+                            data-action="edit-product" 
+                            data-prod-id="${prod.id}" 
+                            class="px-3.5 py-1.5 rounded-lg bg-amber-50 hover:bg-amber-100 text-amber-900 border border-amber-300 font-bold text-xs transition flex items-center space-x-1 shadow-xs cursor-pointer select-none" 
+                            title="Design Edit Karein">
+                        <span class="pointer-events-none">✏️ Edit</span>
                     </button>
 
                     <button type="button" onclick="Admin.deleteProduct('${prod.id}')" class="p-1.5 rounded-lg text-rose-600 hover:text-rose-800 hover:bg-rose-50 transition border border-transparent hover:border-rose-200 cursor-pointer" title="Delete Product">
@@ -876,6 +881,7 @@ Aap website par apna PIN laga kar live order track kar sakte hain.
             setVal('editProdDefaultWidth', prod.defaultWidth || 25);
             setVal('editProdVideo', prod.videoUrl || '');
             setVal('editProdDesc', prod.description || '');
+            setVal('editProdImage', (prod.images && prod.images[0]) ? prod.images[0] : '');
 
             // Initialize multiple images for editing safely
             this.editProductImages = (Array.isArray(prod.images) && prod.images.length > 0)
@@ -1144,3 +1150,24 @@ Aap website par apna PIN laga kar live order track kar sakte hain.
 };
 
 window.Admin = Admin;
+
+// Global fallback helper for opening edit product modal
+window.openEditProductModal = function(id) {
+    if (window.Admin && typeof window.Admin.openEditProductModal === 'function') {
+        window.Admin.openEditProductModal(id);
+    }
+};
+
+// Event delegation listener to ensure 100% reliable clicks on Edit button
+if (typeof document !== 'undefined') {
+    document.addEventListener('click', function(e) {
+        const btn = e.target.closest('[data-action="edit-product"]');
+        if (btn) {
+            const id = btn.getAttribute('data-prod-id');
+            if (id && window.Admin && typeof window.Admin.openEditProductModal === 'function') {
+                e.preventDefault();
+                window.Admin.openEditProductModal(id);
+            }
+        }
+    });
+}
