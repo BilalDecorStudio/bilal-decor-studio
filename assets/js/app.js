@@ -7,6 +7,8 @@ const App = {
     selectedProduct: null,
     cart: [],
     currentView: 'home',
+    modalImages: [],
+    modalImageIndex: 0,
 
     init() {
         this.cart = Store.getCart();
@@ -14,6 +16,10 @@ const App = {
         this.applySettings();
         this.renderProducts();
         this.bindEvents();
+
+        if (window.Admin && Admin.renderNewProductImagesList) {
+            Admin.renderNewProductImagesList();
+        }
 
         if (window.Tracker) {
             Tracker.renderHistory();
@@ -65,6 +71,20 @@ const App = {
                 Tracker.renderHistory(e.target.value);
             });
         }
+
+        // Keyboard arrow navigation for multi-image product modal
+        window.addEventListener('keydown', (e) => {
+            const modal = document.getElementById('productDetailModal');
+            if (modal && !modal.classList.contains('hidden')) {
+                if (e.key === 'ArrowLeft') {
+                    this.prevModalImage();
+                } else if (e.key === 'ArrowRight') {
+                    this.nextModalImage();
+                } else if (e.key === 'Escape') {
+                    this.closeProductModal();
+                }
+            }
+        });
     },
 
     handleHashChange() {
@@ -133,10 +153,17 @@ const App = {
                     ` : ''}
 
                     <div class="absolute bottom-3 left-3 right-3 flex items-center justify-between text-xs text-white">
-                        <span class="px-2.5 py-0.5 rounded-md bg-black/60 backdrop-blur-md text-[11px] text-amber-200 font-medium">
-                            ${prod.categoryName}
-                        </span>
-                        <span class="flex items-center text-amber-300 font-bold drop-shadow">
+                        <div class="flex items-center space-x-1.5 flex-wrap gap-1">
+                            <span class="px-2.5 py-0.5 rounded-md bg-black/60 backdrop-blur-md text-[11px] text-amber-200 font-medium">
+                                ${prod.categoryName}
+                            </span>
+                            ${(prod.images && prod.images.length > 1) ? `
+                                <span class="px-2 py-0.5 rounded-md bg-amber-950/80 backdrop-blur-md text-[10px] text-amber-300 font-bold border border-amber-400/30 flex items-center gap-1 shadow-xs">
+                                    <span>📷</span><span>${prod.images.length} Photos</span>
+                                </span>
+                            ` : ''}
+                        </div>
+                        <span class="flex items-center text-amber-300 font-bold drop-shadow shrink-0 ml-1">
                             ★ ${prod.rating} <span class="text-white/80 font-normal ml-1">(${prod.reviewCount})</span>
                         </span>
                     </div>
@@ -186,15 +213,12 @@ const App = {
         document.getElementById('modalProdDesc').innerText = prod.description;
         document.getElementById('modalProdFabric').innerText = prod.fabricType || 'Royal Velvet';
         
-        const mainImg = document.getElementById('modalMainImage');
-        mainImg.src = prod.images[0];
-
-        const thumbContainer = document.getElementById('modalThumbnails');
-        thumbContainer.innerHTML = prod.images.map((img, idx) => `
-            <button onclick="App.changeModalImage('${img}')" class="w-16 h-16 rounded-xl overflow-hidden border ${idx === 0 ? 'border-amber-600 ring-2 ring-amber-500/30' : 'border-slate-200'} hover:border-amber-500 transition flex-shrink-0">
-                <img src="${img}" class="w-full h-full object-cover" alt="">
-            </button>
-        `).join('');
+        // Multi-image gallery initialization
+        this.modalImages = (Array.isArray(prod.images) && prod.images.length > 0)
+            ? prod.images
+            : (prod.images ? [prod.images] : (prod.image ? [prod.image] : ["assets/images/royal_gold_ceiling.jpg"]));
+        this.modalImageIndex = 0;
+        this.renderModalGallery();
 
         const featContainer = document.getElementById('modalFeaturesList');
         featContainer.innerHTML = (prod.features || []).map(f => `
@@ -224,8 +248,71 @@ const App = {
         document.body.classList.add('overflow-hidden');
     },
 
+    renderModalGallery() {
+        const mainImg = document.getElementById('modalMainImage');
+        if (mainImg && this.modalImages.length > 0) {
+            mainImg.src = this.modalImages[this.modalImageIndex];
+        }
+
+        const counter = document.getElementById('modalImgCounter');
+        if (counter) {
+            counter.innerText = `${this.modalImageIndex + 1} / ${this.modalImages.length}`;
+            if (this.modalImages.length <= 1) {
+                counter.classList.add('hidden');
+            } else {
+                counter.classList.remove('hidden');
+            }
+        }
+
+        const prevBtn = document.getElementById('modalPrevImgBtn');
+        const nextBtn = document.getElementById('modalNextImgBtn');
+        if (prevBtn && nextBtn) {
+            if (this.modalImages.length > 1) {
+                prevBtn.classList.remove('hidden');
+                nextBtn.classList.remove('hidden');
+            } else {
+                prevBtn.classList.add('hidden');
+                nextBtn.classList.add('hidden');
+            }
+        }
+
+        const thumbContainer = document.getElementById('modalThumbnails');
+        if (thumbContainer) {
+            thumbContainer.innerHTML = this.modalImages.map((img, idx) => `
+                <button onclick="App.setModalImage(${idx})" class="w-16 h-16 rounded-xl overflow-hidden border-2 transition-all flex-shrink-0 cursor-pointer ${idx === this.modalImageIndex ? 'border-amber-600 ring-2 ring-amber-500/50 scale-105 shadow-md' : 'border-slate-200 opacity-70 hover:opacity-100 hover:border-amber-400'}" title="Tasveer ${idx + 1}">
+                    <img src="${img}" class="w-full h-full object-cover" alt="" onerror="this.src='assets/images/royal_gold_ceiling.jpg'">
+                </button>
+            `).join('');
+        }
+    },
+
+    setModalImage(idx) {
+        if (idx >= 0 && idx < this.modalImages.length) {
+            this.modalImageIndex = idx;
+            this.renderModalGallery();
+        }
+    },
+
+    prevModalImage() {
+        if (!this.modalImages || this.modalImages.length <= 1) return;
+        this.modalImageIndex = (this.modalImageIndex - 1 + this.modalImages.length) % this.modalImages.length;
+        this.renderModalGallery();
+    },
+
+    nextModalImage() {
+        if (!this.modalImages || this.modalImages.length <= 1) return;
+        this.modalImageIndex = (this.modalImageIndex + 1) % this.modalImages.length;
+        this.renderModalGallery();
+    },
+
     changeModalImage(imgSrc) {
-        document.getElementById('modalMainImage').src = imgSrc;
+        const foundIdx = this.modalImages.indexOf(imgSrc);
+        if (foundIdx !== -1) {
+            this.setModalImage(foundIdx);
+        } else {
+            const mainImg = document.getElementById('modalMainImage');
+            if (mainImg) mainImg.src = imgSrc;
+        }
     },
 
     closeProductModal() {
@@ -233,6 +320,8 @@ const App = {
         document.body.classList.remove('overflow-hidden');
         document.getElementById('modalVideoIframe').src = "";
         this.selectedProduct = null;
+        this.modalImages = [];
+        this.modalImageIndex = 0;
     },
 
     applyPresetDimension(length, width) {

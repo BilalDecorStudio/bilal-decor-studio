@@ -575,7 +575,21 @@ class Store {
     }
 
     static getProducts() {
-        return this.get(STORAGE_KEYS.PRODUCTS, initialProducts);
+        const products = this.get(STORAGE_KEYS.PRODUCTS, initialProducts);
+        if (Array.isArray(products)) {
+            products.forEach(p => {
+                if (!p.images || !Array.isArray(p.images) || p.images.length === 0) {
+                    if (p.image && typeof p.image === 'string') {
+                        p.images = [p.image];
+                    } else if (typeof p.images === 'string') {
+                        p.images = [p.images];
+                    } else {
+                        p.images = ["assets/images/royal_gold_ceiling.jpg"];
+                    }
+                }
+            });
+        }
+        return products;
     }
 
     static saveProducts(products) {

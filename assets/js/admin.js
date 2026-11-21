@@ -604,9 +604,206 @@ Aap website par apna PIN laga kar live order track kar sakte hain.
         window.open(url, '_blank');
     },
 
+    newProductImages: ["assets/images/royal_gold_ceiling.jpg"],
+    editProductImages: [],
+
+    renderNewProductImagesList() {
+        if (typeof document === 'undefined') return;
+        const container = document.getElementById('newProdImagesContainer');
+        const counter = document.getElementById('newProdImagesCounter');
+        if (counter) counter.innerText = `${this.newProductImages.length} Tasveer(ein)`;
+        if (!container) return;
+
+        if (this.newProductImages.length === 0) {
+            container.innerHTML = `
+                <div class="w-full py-3 px-4 rounded-xl bg-amber-50/60 border border-dashed border-amber-300 text-amber-900 text-center text-xs">
+                    Abhi tak koi tasveer shamil nahi hui. Upar diye gaye buttons se tasveer shamil karein.
+                </div>
+            `;
+            return;
+        }
+
+        container.innerHTML = this.newProductImages.map((img, idx) => `
+            <div class="relative group bg-white border border-slate-200 rounded-xl p-1 shadow-xs flex flex-col items-center w-20">
+                <div class="w-18 h-18 rounded-lg overflow-hidden bg-slate-100 border border-slate-200 shrink-0">
+                    <img src="${img}" class="w-full h-full object-cover" alt="Image ${idx + 1}" onerror="this.src='assets/images/royal_gold_ceiling.jpg'">
+                </div>
+                <div class="mt-1 text-center w-full">
+                    ${idx === 0 
+                        ? `<span class="bg-amber-600 text-white text-[9px] font-bold px-1.5 py-0.5 rounded shadow-2xs block truncate">⭐ Cover</span>` 
+                        : `<button type="button" onclick="Admin.setNewProductMainImage(${idx})" class="text-[9px] text-amber-700 hover:text-amber-900 font-bold hover:underline block truncate w-full" title="Main Cover Banayein">⭐ Main</button>`
+                    }
+                </div>
+                <button type="button" onclick="Admin.removeNewProductImage(${idx})" class="absolute -top-1.5 -right-1.5 w-5 h-5 rounded-full bg-rose-500 hover:bg-rose-700 text-white text-[10px] font-bold flex items-center justify-center shadow-sm transition" title="Tasveer Delete Karein">
+                    ✕
+                </button>
+            </div>
+        `).join('');
+    },
+
+    addNewProductImageUrl() {
+        const input = document.getElementById('newProdImageUrlInput');
+        if (!input) return;
+        const val = input.value.trim();
+        if (!val) {
+            alert("Barahe meharbani tasveer ka link darj karein.");
+            return;
+        }
+
+        const links = val.split(/[\n,]+/).map(s => s.trim()).filter(Boolean);
+        links.forEach(link => {
+            this.newProductImages.push(link);
+        });
+
+        input.value = '';
+        this.renderNewProductImagesList();
+    },
+
+    handleNewProductImagesUpload(event) {
+        const files = event.target.files;
+        if (!files || files.length === 0) return;
+
+        const promises = Array.from(files).map(file => {
+            return new Promise((resolve) => {
+                const reader = new FileReader();
+                reader.onload = (e) => resolve(e.target.result);
+                reader.onerror = () => resolve(null);
+                reader.readAsDataURL(file);
+            });
+        });
+
+        Promise.all(promises).then(dataUrls => {
+            dataUrls.filter(Boolean).forEach(url => {
+                this.newProductImages.push(url);
+            });
+            event.target.value = '';
+            this.renderNewProductImagesList();
+        });
+    },
+
+    addPresetToNewProduct(url) {
+        if (!url) return;
+        this.newProductImages.push(url);
+        this.renderNewProductImagesList();
+    },
+
+    removeNewProductImage(idx) {
+        if (idx >= 0 && idx < this.newProductImages.length) {
+            this.newProductImages.splice(idx, 1);
+            this.renderNewProductImagesList();
+        }
+    },
+
+    setNewProductMainImage(idx) {
+        if (idx > 0 && idx < this.newProductImages.length) {
+            const item = this.newProductImages.splice(idx, 1)[0];
+            this.newProductImages.unshift(item);
+            this.renderNewProductImagesList();
+        }
+    },
+
+    // Edit Product Multiple Images Logic
+    renderEditProductImagesList() {
+        if (typeof document === 'undefined') return;
+        const container = document.getElementById('editProdImagesContainer');
+        const counter = document.getElementById('editProdImagesCounter');
+        if (counter) counter.innerText = `${this.editProductImages.length} Tasveer(ein)`;
+        if (!container) return;
+
+        if (this.editProductImages.length === 0) {
+            container.innerHTML = `
+                <div class="w-full py-3 px-4 rounded-xl bg-amber-50/60 border border-dashed border-amber-300 text-amber-900 text-center text-xs">
+                    Abhi tak koi tasveer nahi hai. Barahe meharbani kam az kam 1 tasveer zaroor shamil karein.
+                </div>
+            `;
+            return;
+        }
+
+        container.innerHTML = this.editProductImages.map((img, idx) => `
+            <div class="relative group bg-white border border-slate-200 rounded-xl p-1 shadow-xs flex flex-col items-center w-20">
+                <div class="w-18 h-18 rounded-lg overflow-hidden bg-slate-100 border border-slate-200 shrink-0">
+                    <img src="${img}" class="w-full h-full object-cover" alt="Image ${idx + 1}" onerror="this.src='assets/images/royal_gold_ceiling.jpg'">
+                </div>
+                <div class="mt-1 text-center w-full">
+                    ${idx === 0 
+                        ? `<span class="bg-amber-600 text-white text-[9px] font-bold px-1.5 py-0.5 rounded shadow-2xs block truncate">⭐ Cover</span>` 
+                        : `<button type="button" onclick="Admin.setEditProductMainImage(${idx})" class="text-[9px] text-amber-700 hover:text-amber-900 font-bold hover:underline block truncate w-full" title="Main Cover Banayein">⭐ Main</button>`
+                    }
+                </div>
+                <button type="button" onclick="Admin.removeEditProductImage(${idx})" class="absolute -top-1.5 -right-1.5 w-5 h-5 rounded-full bg-rose-500 hover:bg-rose-700 text-white text-[10px] font-bold flex items-center justify-center shadow-sm transition" title="Tasveer Delete Karein">
+                    ✕
+                </button>
+            </div>
+        `).join('');
+    },
+
+    addEditProductImageUrl() {
+        const input = document.getElementById('editProdImageUrlInput');
+        if (!input) return;
+        const val = input.value.trim();
+        if (!val) {
+            alert("Barahe meharbani tasveer ka link darj karein.");
+            return;
+        }
+
+        const links = val.split(/[\n,]+/).map(s => s.trim()).filter(Boolean);
+        links.forEach(link => {
+            this.editProductImages.push(link);
+        });
+
+        input.value = '';
+        this.renderEditProductImagesList();
+    },
+
+    handleEditProductImagesUpload(event) {
+        const files = event.target.files;
+        if (!files || files.length === 0) return;
+
+        const promises = Array.from(files).map(file => {
+            return new Promise((resolve) => {
+                const reader = new FileReader();
+                reader.onload = (e) => resolve(e.target.result);
+                reader.onerror = () => resolve(null);
+                reader.readAsDataURL(file);
+            });
+        });
+
+        Promise.all(promises).then(dataUrls => {
+            dataUrls.filter(Boolean).forEach(url => {
+                this.editProductImages.push(url);
+            });
+            event.target.value = '';
+            this.renderEditProductImagesList();
+        });
+    },
+
+    addPresetToEditProduct(url) {
+        if (!url) return;
+        this.editProductImages.push(url);
+        this.renderEditProductImagesList();
+    },
+
+    removeEditProductImage(idx) {
+        if (idx >= 0 && idx < this.editProductImages.length) {
+            this.editProductImages.splice(idx, 1);
+            this.renderEditProductImagesList();
+        }
+    },
+
+    setEditProductMainImage(idx) {
+        if (idx > 0 && idx < this.editProductImages.length) {
+            const item = this.editProductImages.splice(idx, 1)[0];
+            this.editProductImages.unshift(item);
+            this.renderEditProductImagesList();
+        }
+    },
+
     renderAdminProducts() {
         const container = document.getElementById('adminProductsList');
         if (!container) return;
+
+        // Ensure Add Product Image List is rendered
+        this.renderNewProductImagesList();
 
         const products = Store.getProducts();
         container.innerHTML = products.map(prod => `
@@ -617,6 +814,7 @@ Aap website par apna PIN laga kar live order track kar sakte hain.
                         <div class="flex items-center gap-1.5 flex-wrap">
                             <p class="font-bold text-slate-900 text-sm">${prod.titleRoman || prod.title}</p>
                             ${prod.badge ? `<span class="px-2 py-0.5 rounded text-[10px] font-bold bg-amber-100 text-amber-900">${prod.badge}</span>` : ''}
+                            <span class="px-2 py-0.5 rounded text-[10px] font-bold bg-slate-100 text-slate-700 border border-slate-200">📷 ${prod.images ? prod.images.length : 1} Photos</span>
                         </div>
                         <p class="text-slate-500 text-xs mt-0.5">
                             <span class="text-amber-800 font-bold">${prod.categoryName || prod.category}</span> • 
@@ -667,9 +865,14 @@ Aap website par apna PIN laga kar live order track kar sakte hain.
         document.getElementById('editProdFabricType').value = prod.fabricType || '';
         document.getElementById('editProdDefaultLength').value = prod.defaultLength || 40;
         document.getElementById('editProdDefaultWidth').value = prod.defaultWidth || 25;
-        document.getElementById('editProdImage').value = (prod.images && prod.images[0]) ? prod.images[0] : '';
         document.getElementById('editProdVideo').value = prod.videoUrl || '';
         document.getElementById('editProdDesc').value = prod.description || '';
+
+        // Initialize multiple images for editing
+        this.editProductImages = (Array.isArray(prod.images) && prod.images.length > 0)
+            ? [...prod.images]
+            : (prod.images ? [prod.images] : (prod.image ? [prod.image] : ["assets/images/royal_gold_ceiling.jpg"]));
+        this.renderEditProductImagesList();
 
         modal.classList.remove('hidden');
         document.body.classList.add('overflow-hidden');
@@ -701,7 +904,6 @@ Aap website par apna PIN laga kar live order track kar sakte hain.
         const fabricType = document.getElementById('editProdFabricType')?.value.trim() || 'Premium Marquee Fabric';
         const defaultLength = parseFloat(document.getElementById('editProdDefaultLength')?.value) || 40;
         const defaultWidth = parseFloat(document.getElementById('editProdDefaultWidth')?.value) || 25;
-        const rawImage = document.getElementById('editProdImage')?.value.trim();
         const rawVideo = document.getElementById('editProdVideo')?.value.trim();
         const desc = document.getElementById('editProdDesc')?.value.trim();
 
@@ -718,6 +920,10 @@ Aap website par apna PIN laga kar live order track kar sakte hain.
 
         const convertedVideo = (window.App && App.formatYouTubeEmbedUrl) ? App.formatYouTubeEmbedUrl(rawVideo) : rawVideo;
 
+        const finalImages = this.editProductImages.length > 0 
+            ? [...this.editProductImages] 
+            : (products[pIndex].images && products[pIndex].images.length > 0 ? products[pIndex].images : ["assets/images/royal_gold_ceiling.jpg"]);
+
         const updated = {
             ...products[pIndex],
             titleRoman,
@@ -729,7 +935,7 @@ Aap website par apna PIN laga kar live order track kar sakte hain.
             fabricType,
             defaultLength,
             defaultWidth,
-            images: rawImage ? [rawImage] : (products[pIndex].images || ["assets/images/royal_gold_ceiling.jpg"]),
+            images: finalImages,
             videoUrl: convertedVideo,
             description: desc || products[pIndex].description
         };
@@ -778,7 +984,6 @@ Aap website par apna PIN laga kar live order track kar sakte hain.
         const titleEn = document.getElementById('newProdTitleEn')?.value.trim();
         const category = document.getElementById('newProdCategory')?.value;
         const rate = parseFloat(document.getElementById('newProdRate')?.value) || 60;
-        const imgUrl = document.getElementById('newProdImage')?.value.trim() || "assets/images/royal_gold_ceiling.jpg";
         const videoUrl = document.getElementById('newProdVideo')?.value.trim() || "";
         const desc = document.getElementById('newProdDesc')?.value.trim() || "Premium marquee ceiling fabric.";
 
@@ -792,6 +997,10 @@ Aap website par apna PIN laga kar live order track kar sakte hain.
             hall: "Hall Ceiling (Main Hall)",
             entrance: "Rahdari (Entrance)"
         };
+
+        const finalImages = (this.newProductImages && this.newProductImages.length > 0)
+            ? [...this.newProductImages]
+            : ["assets/images/royal_gold_ceiling.jpg"];
 
         const newProd = {
             id: 'prod-' + Date.now(),
@@ -809,7 +1018,7 @@ Aap website par apna PIN laga kar live order track kar sakte hain.
             reviewCount: 1,
             inStock: true,
             fabricType: "Royal Velvet & Silk",
-            images: [imgUrl],
+            images: finalImages,
             videoUrl,
             features: [
                 "Bareek aur mazboot interlock double silai",
@@ -822,8 +1031,10 @@ Aap website par apna PIN laga kar live order track kar sakte hain.
         products.unshift(newProd);
         Store.saveProducts(products);
 
-        alert("Naya design shamil ho gaya.");
+        alert("Naya design shamil ho gaya!");
         document.getElementById('addNewProductForm')?.reset();
+        this.newProductImages = ["assets/images/royal_gold_ceiling.jpg"];
+        this.renderNewProductImagesList();
         this.renderAdminProducts();
         if (window.App) {
             App.renderProducts();
