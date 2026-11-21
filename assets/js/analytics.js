@@ -56,6 +56,8 @@ const Analytics = {
      */
     setDuration(duration) {
         this.currentDuration = duration;
+        const sel = document.getElementById('analyticsDurationSelect');
+        if (sel) sel.value = duration;
         this.updateFilterButtons();
         this.render();
     },
@@ -70,6 +72,11 @@ const Analytics = {
     },
 
     updateFilterButtons() {
+        const sel = document.getElementById('analyticsDurationSelect');
+        if (sel && sel.value !== this.currentDuration) {
+            sel.value = this.currentDuration;
+        }
+
         document.querySelectorAll('.analytics-duration-btn').forEach(btn => {
             const dur = btn.dataset.duration;
             if (dur === this.currentDuration) {

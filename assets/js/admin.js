@@ -610,26 +610,139 @@ Aap website par apna PIN laga kar live order track kar sakte hain.
 
         const products = Store.getProducts();
         container.innerHTML = products.map(prod => `
-            <div class="flex items-center justify-between p-3 rounded-xl bg-white border border-slate-200 shadow-sm text-xs">
+            <div class="flex flex-col sm:flex-row sm:items-center justify-between p-3.5 rounded-xl bg-white border border-slate-200 shadow-xs text-xs gap-3">
                 <div class="flex items-center space-x-3">
-                    <img src="${prod.images[0]}" class="w-12 h-12 object-cover rounded-lg border border-slate-200" alt="">
+                    <img src="${(prod.images && prod.images[0]) ? prod.images[0] : 'assets/images/royal_gold_ceiling.jpg'}" class="w-14 h-14 object-cover rounded-xl border border-slate-200 shrink-0" alt="">
                     <div>
-                        <p class="font-bold text-slate-900 text-sm">${prod.titleRoman}</p>
-                        <p class="text-slate-500 text-xs">${prod.title} • <span class="text-amber-800 font-bold">${prod.categoryName}</span></p>
+                        <div class="flex items-center gap-1.5 flex-wrap">
+                            <p class="font-bold text-slate-900 text-sm">${prod.titleRoman || prod.title}</p>
+                            ${prod.badge ? `<span class="px-2 py-0.5 rounded text-[10px] font-bold bg-amber-100 text-amber-900">${prod.badge}</span>` : ''}
+                        </div>
+                        <p class="text-slate-500 text-xs mt-0.5">
+                            <span class="text-amber-800 font-bold">${prod.categoryName || prod.category}</span> • 
+                            ${prod.fabricType || 'Fabric'} • 
+                            ${prod.defaultLength || 40}x${prod.defaultWidth || 25} ft
+                        </p>
                     </div>
                 </div>
-                <div class="flex items-center space-x-3">
-                    <div class="text-right">
-                        <span class="text-xs text-slate-500">Rate/sq ft:</span>
+
+                <div class="flex items-center justify-end space-x-2 shrink-0 border-t sm:border-t-0 pt-2 sm:pt-0 border-slate-100">
+                    <div class="text-right mr-1">
+                        <span class="text-[10px] text-slate-400 block">Rate/sq ft:</span>
                         <div class="flex items-center space-x-1">
                             <span class="text-amber-800 font-bold font-mono">Rs.</span>
-                            <input type="number" value="${prod.ratePerSqFt}" onchange="Admin.updateProductRate('${prod.id}', this.value)" class="w-16 bg-slate-50 text-center text-slate-900 border border-slate-300 rounded px-1 py-0.5 text-xs font-bold font-mono focus:border-amber-500">
+                            <input type="number" value="${prod.ratePerSqFt}" onchange="Admin.updateProductRate('${prod.id}', this.value)" class="w-16 bg-slate-50 text-center text-slate-900 border border-slate-300 rounded px-1.5 py-1 text-xs font-bold font-mono focus:border-amber-500">
                         </div>
                     </div>
-                    <button onclick="Admin.deleteProduct('${prod.id}')" class="text-red-500 hover:text-red-700 p-1 font-bold">🗑️</button>
+
+                    <button onclick="Admin.openEditProductModal('${prod.id}')" class="px-3 py-1.5 rounded-lg bg-amber-50 hover:bg-amber-100 text-amber-900 border border-amber-300 font-bold text-xs transition flex items-center space-x-1 shadow-xs" title="Design Edit Karein">
+                        <span>✏️ Edit</span>
+                    </button>
+
+                    <button onclick="Admin.deleteProduct('${prod.id}')" class="p-1.5 rounded-lg text-rose-600 hover:text-rose-800 hover:bg-rose-50 transition border border-transparent hover:border-rose-200" title="Delete Product">
+                        🗑️
+                    </button>
                 </div>
             </div>
         `).join('');
+    },
+
+    openEditProductModal(prodId) {
+        const products = Store.getProducts();
+        const prod = products.find(p => p.id === prodId);
+        if (!prod) {
+            alert("Design nahi mila.");
+            return;
+        }
+
+        const modal = document.getElementById('editProductModal');
+        if (!modal) return;
+
+        document.getElementById('editProdId').value = prod.id;
+        document.getElementById('editProdTitleRoman').value = prod.titleRoman || '';
+        document.getElementById('editProdTitleEn').value = prod.title || '';
+        document.getElementById('editProdCategory').value = prod.category || 'stage';
+        document.getElementById('editProdRate').value = prod.ratePerSqFt || 60;
+        document.getElementById('editProdBadge').value = prod.badge || '';
+        document.getElementById('editProdFabricType').value = prod.fabricType || '';
+        document.getElementById('editProdDefaultLength').value = prod.defaultLength || 40;
+        document.getElementById('editProdDefaultWidth').value = prod.defaultWidth || 25;
+        document.getElementById('editProdImage').value = (prod.images && prod.images[0]) ? prod.images[0] : '';
+        document.getElementById('editProdVideo').value = prod.videoUrl || '';
+        document.getElementById('editProdDesc').value = prod.description || '';
+
+        modal.classList.remove('hidden');
+        document.body.classList.add('overflow-hidden');
+    },
+
+    closeEditProductModal() {
+        const modal = document.getElementById('editProductModal');
+        if (modal) modal.classList.add('hidden');
+        document.body.classList.remove('overflow-hidden');
+    },
+
+    saveProductEdit(event) {
+        event.preventDefault();
+        const prodId = document.getElementById('editProdId')?.value;
+        if (!prodId) return;
+
+        const products = Store.getProducts();
+        const pIndex = products.findIndex(p => p.id === prodId);
+        if (pIndex === -1) {
+            alert("Design record nahi mila.");
+            return;
+        }
+
+        const titleRoman = document.getElementById('editProdTitleRoman')?.value.trim();
+        const titleEn = document.getElementById('editProdTitleEn')?.value.trim();
+        const category = document.getElementById('editProdCategory')?.value || 'stage';
+        const rate = parseFloat(document.getElementById('editProdRate')?.value) || 60;
+        const badge = document.getElementById('editProdBadge')?.value.trim() || 'Sab Se Zyada Maqbool';
+        const fabricType = document.getElementById('editProdFabricType')?.value.trim() || 'Premium Marquee Fabric';
+        const defaultLength = parseFloat(document.getElementById('editProdDefaultLength')?.value) || 40;
+        const defaultWidth = parseFloat(document.getElementById('editProdDefaultWidth')?.value) || 25;
+        const rawImage = document.getElementById('editProdImage')?.value.trim();
+        const rawVideo = document.getElementById('editProdVideo')?.value.trim();
+        const desc = document.getElementById('editProdDesc')?.value.trim();
+
+        if (!titleRoman) {
+            alert("Barahe meharbani Design ka naam darj karein.");
+            return;
+        }
+
+        const categoryMap = {
+            stage: "Stage Chadar (Stage Ceiling)",
+            hall: "Hall Ceiling (Main Hall)",
+            entrance: "Rahdari Chadar (Entrance Corridor)"
+        };
+
+        const convertedVideo = (window.App && App.formatYouTubeEmbedUrl) ? App.formatYouTubeEmbedUrl(rawVideo) : rawVideo;
+
+        const updated = {
+            ...products[pIndex],
+            titleRoman,
+            title: titleEn || titleRoman,
+            category,
+            categoryName: categoryMap[category] || "Stage Chadar",
+            ratePerSqFt: rate,
+            badge,
+            fabricType,
+            defaultLength,
+            defaultWidth,
+            images: rawImage ? [rawImage] : (products[pIndex].images || ["assets/images/royal_gold_ceiling.jpg"]),
+            videoUrl: convertedVideo,
+            description: desc || products[pIndex].description
+        };
+
+        products[pIndex] = updated;
+        Store.saveProducts(products);
+
+        this.closeEditProductModal();
+        this.renderAdminProducts();
+        if (window.App) {
+            App.renderProducts();
+        }
+        alert("Design kamyabi se update ho gaya!");
     },
 
     updateProductRate(prodId, newRate) {
