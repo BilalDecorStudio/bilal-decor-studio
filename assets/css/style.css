@@ -1,0 +1,281 @@
+/* =========================================================
+   Bilal Decor Studio - Luxury Light & Royal Gold Stylesheet
+   Modern Bridal, Event Decor & Marquee Manufacturer Aesthetic
+   ========================================================= */
+
+@import url('https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,500;0,600;0,700;0,800;1,600&family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&family=Noto+Nastaliq+Urdu:wght@400;600;700&display=swap');
+
+:root {
+    --bg-main: #FDFBF8;
+    --bg-surface: #FFFFFF;
+    --bg-ivory: #F8F4EC;
+    --bg-subtle: #F1ECE1;
+    --gold-primary: #C59A3F;
+    --gold-dark: #8E6B1E;
+    --gold-light: #F9F2E2;
+    --gold-border: rgba(197, 154, 63, 0.28);
+    --gold-glow: rgba(197, 154, 63, 0.18);
+    --text-primary: #0F172A;
+    --text-secondary: #475569;
+    --text-muted: #64748B;
+    --emerald-primary: #065F46;
+    --emerald-light: #ECFDF5;
+    --border-subtle: #E2E8F0;
+}
+
+body {
+    font-family: 'Plus Jakarta Sans', sans-serif;
+    background-color: var(--bg-main);
+    color: var(--text-primary);
+    overflow-x: hidden;
+}
+
+.font-urdu {
+    font-family: 'Noto Nastaliq Urdu', serif;
+    line-height: 2;
+}
+
+.font-serif-luxury {
+    font-family: 'Playfair Display', Georgia, serif;
+}
+
+/* Custom Scrollbar */
+::-webkit-scrollbar {
+    width: 8px;
+    height: 8px;
+}
+::-webkit-scrollbar-track {
+    background: #F8F4EC;
+}
+::-webkit-scrollbar-thumb {
+    background: #CBD5E1;
+    border-radius: 4px;
+}
+::-webkit-scrollbar-thumb:hover {
+    background: #C59A3F;
+}
+
+/* Luxury Gold Foil Gradients */
+.bg-gold-metallic {
+    background: linear-gradient(135deg, #DFB96C 0%, #C59A3F 50%, #9B7223 100%);
+}
+
+.bg-gold-soft {
+    background: linear-gradient(135deg, #FBF8F1 0%, #F5ECDA 100%);
+}
+
+.text-gold-gradient {
+    background: linear-gradient(135deg, #996E25 0%, #C59A3F 45%, #E5C37A 75%, #8B631B 100%);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+}
+
+/* Card Surfaces */
+.luxury-card {
+    background: #FFFFFF;
+    border: 1px solid rgba(197, 154, 63, 0.22);
+    box-shadow: 0 4px 20px -2px rgba(15, 23, 42, 0.04), 0 0 1px 1px rgba(197, 154, 63, 0.1);
+    transition: all 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.luxury-card:hover {
+    border-color: rgba(197, 154, 63, 0.5);
+    box-shadow: 0 16px 32px -4px rgba(197, 154, 63, 0.14), 0 0 1px 1px rgba(197, 154, 63, 0.3);
+    transform: translateY(-2px);
+}
+
+.luxury-card-flat {
+    background: #FFFFFF;
+    border: 1px solid #E2E8F0;
+    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.03);
+}
+
+/* Subtle pattern for marquee hero section */
+.marquee-pattern-bg {
+    background-color: #FDFBF8;
+    background-image: radial-gradient(rgba(197, 154, 63, 0.15) 1px, transparent 1px);
+    background-size: 24px 24px;
+}
+
+/* Product Card Image Zoom */
+.product-card-img {
+    transition: transform 0.6s cubic-bezier(0.25, 1, 0.5, 1);
+}
+.product-card:hover .product-card-img {
+    transform: scale(1.06);
+}
+
+/* Clean Form inputs */
+.luxury-input {
+    background-color: #FFFFFF;
+    border: 1.5px solid #CBD5E1;
+    color: #0F172A;
+    transition: all 0.2s ease;
+}
+.luxury-input:focus {
+    border-color: #C59A3F;
+    outline: none;
+    box-shadow: 0 0 0 3px rgba(197, 154, 63, 0.15);
+}
+
+/* Custom Number Input spinner removal */
+input[type=number]::-webkit-inner-spin-button, 
+input[type=number]::-webkit-outer-spin-button { 
+    -webkit-appearance: none; 
+    margin: 0; 
+}
+input[type=number] {
+    -moz-appearance: textfield;
+}
+
+/* =========================================================
+   CLEAN MODERN UI & TACTILE ELEVATIONS (3D ANIMATIONS REMOVED)
+   ========================================================= */
+
+/* Cards - Clean, Stable & Professional */
+.card-3d-container {
+    perspective: none;
+}
+
+.card-3d {
+    transition: transform 0.2s ease, box-shadow 0.2s ease, border-color 0.2s ease;
+    will-change: auto;
+}
+
+.card-3d:hover {
+    transform: translateY(-3px);
+    box-shadow: 0 12px 24px -6px rgba(15, 23, 42, 0.08), 0 0 1px 1px rgba(197, 154, 63, 0.25);
+}
+
+/* Modern Solid Tactile Buttons (Smooth, Professional, No Clumsy 3D Wobble) */
+.btn-3d-gold {
+    background: linear-gradient(180deg, #DFB96C 0%, #C59A3F 100%);
+    box-shadow: 0 2px 8px rgba(197, 154, 63, 0.25);
+    transition: all 0.15s ease;
+    border: 1px solid rgba(142, 107, 30, 0.3);
+}
+.btn-3d-gold:hover {
+    background: linear-gradient(180deg, #E5C37A 0%, #C59A3F 100%);
+    box-shadow: 0 4px 14px rgba(197, 154, 63, 0.35);
+    transform: translateY(-1px);
+}
+.btn-3d-gold:active {
+    transform: translateY(0);
+    box-shadow: 0 1px 4px rgba(197, 154, 63, 0.2);
+}
+
+.btn-3d-emerald {
+    background: linear-gradient(180deg, #10B981 0%, #059669 100%);
+    box-shadow: 0 2px 8px rgba(5, 150, 105, 0.25);
+    transition: all 0.15s ease;
+    border: 1px solid rgba(4, 120, 87, 0.3);
+}
+.btn-3d-emerald:hover {
+    background: linear-gradient(180deg, #34D399 0%, #059669 100%);
+    box-shadow: 0 4px 14px rgba(5, 150, 105, 0.35);
+    transform: translateY(-1px);
+}
+.btn-3d-emerald:active {
+    transform: translateY(0);
+    box-shadow: 0 1px 4px rgba(5, 150, 105, 0.2);
+}
+
+.btn-3d-dark {
+    background: linear-gradient(180deg, #1E293B 0%, #0F172A 100%);
+    box-shadow: 0 2px 8px rgba(15, 23, 42, 0.2);
+    transition: all 0.15s ease;
+    border: 1px solid rgba(15, 23, 42, 0.4);
+}
+.btn-3d-dark:hover {
+    background: linear-gradient(180deg, #334155 0%, #0F172A 100%);
+    box-shadow: 0 4px 12px rgba(15, 23, 42, 0.3);
+    transform: translateY(-1px);
+}
+.btn-3d-dark:active {
+    transform: translateY(0);
+    box-shadow: 0 1px 4px rgba(15, 23, 42, 0.2);
+}
+
+/* Floating Animations Neutralized */
+.animate-float-3d {
+    animation: none !important;
+}
+
+/* Marquee Visualizer - Flat & Clean */
+.marquee-3d-stage {
+    perspective: none;
+}
+
+.marquee-3d-tent {
+    transform: none;
+}
+.marquee-3d-tent:hover {
+    transform: none;
+}
+
+/* Custom Popup Alert - Smooth Clean Fade & Scale (No 3D Perspective Rotation) */
+@keyframes popupCleanIn {
+    0% {
+        opacity: 0;
+        transform: scale(0.95);
+    }
+    100% {
+        opacity: 1;
+        transform: scale(1);
+    }
+}
+
+.custom-popup-card {
+    animation: popupCleanIn 0.2s cubic-bezier(0.16, 1, 0.3, 1);
+    box-shadow: 0 20px 40px -10px rgba(15, 23, 42, 0.25), 0 0 0 1px rgba(197, 154, 63, 0.3);
+}
+
+/* Toast Notification (Top-Right) */
+@keyframes toastSlideIn {
+    0% {
+        opacity: 0;
+        transform: translateX(30px);
+    }
+    100% {
+        opacity: 1;
+        transform: translateX(0);
+    }
+}
+.toast-slide-in {
+    animation: toastSlideIn 0.25s ease-out;
+}
+
+/* AI Estimator Box Animation & Styling */
+.ai-estimator-box {
+    position: relative;
+    overflow: hidden;
+    backdrop-filter: blur(8px);
+    border: 1px solid rgba(197, 154, 63, 0.45);
+}
+.ai-estimator-box::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 4px;
+    height: 100%;
+    background: linear-gradient(180deg, #10B981 0%, #C59A3F 100%);
+}
+
+/* Thermal receipt print view */
+@media print {
+    body * {
+        visibility: hidden;
+    }
+    #printableSlip, #printableSlip * {
+        visibility: visible;
+    }
+    #printableSlip {
+        position: absolute;
+        left: 0;
+        top: 0;
+        width: 100%;
+        background: #fff !important;
+        color: #000 !important;
+    }
+}

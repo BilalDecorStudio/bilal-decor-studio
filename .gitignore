@@ -1,0 +1,16 @@
+# Node Modules & Environment
+node_modules/
+.env
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+
+# Live Production Database Protection (Prevents overwriting live customer orders)
+database/*.json
+database/*.csv
+database/*.log
+!database/.gitkeep
+
+# Operating System Files
+.DS_Store
+Thumbs.db

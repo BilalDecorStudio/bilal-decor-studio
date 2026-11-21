@@ -1,0 +1,202 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Bilal Decor Studio - Project Architecture & Agent Handoff Guide</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.10.1/html2pdf.bundle.min.js"></script>
+    <link rel="stylesheet" href="assets/css/style.css">
+    <style>
+        @media print {
+            .no-print { display: none !important; }
+            body { background: white !important; color: black !important; }
+            .page-break { page-break-after: always; }
+        }
+    </style>
+</head>
+<body class="bg-[#FDFBF8] text-slate-800 p-4 sm:p-8 md:p-12 font-sans antialiased">
+    <!-- Top Action Bar -->
+    <div class="max-w-4xl mx-auto mb-6 flex items-center justify-between no-print">
+        <a href="index.html" class="px-4 py-2 rounded-xl bg-slate-100 hover:bg-slate-200 text-slate-700 text-xs font-bold border border-slate-300">
+            ← Back to Website
+        </a>
+        <button onclick="downloadAsPDF()" class="btn-3d-gold px-6 py-2.5 rounded-xl text-white font-extrabold text-xs shadow-md flex items-center space-x-2">
+            <span>📄 Download Official PDF Guide</span>
+        </button>
+    </div>
+
+    <!-- Main Printable Document Container -->
+    <div id="pdfContent" class="max-w-4xl mx-auto bg-white rounded-3xl p-8 sm:p-12 border border-amber-300/80 shadow-xl space-y-8">
+        
+        <!-- Document Header -->
+        <div class="flex flex-col sm:flex-row items-start sm:items-center justify-between pb-6 border-b-2 border-amber-500 gap-4">
+            <div class="flex items-center space-x-4">
+                <img src="assets/images/logo.svg" alt="Bilal Decor Studio" class="h-14 w-auto">
+            </div>
+            <div class="sm:text-right">
+                <span class="inline-block px-3 py-1 rounded-full bg-amber-100 text-amber-900 font-extrabold text-xs mb-1">
+                    AGENT HANDOFF &amp; TECHNICAL MANUAL
+                </span>
+                <h3 class="text-xl font-bold font-mono text-slate-900">BDS-ARCH-v2.6</h3>
+                <p class="text-xs text-slate-500">Updated: <strong>November 2026</strong></p>
+            </div>
+        </div>
+
+        <!-- Executive Summary Banner -->
+        <div class="p-6 rounded-2xl bg-[#FAF7F0] border border-amber-300 space-y-2">
+            <h2 class="text-lg font-bold text-amber-950 font-serif-luxury">Project Handoff &amp; Architectural Reference</h2>
+            <p class="text-xs text-slate-700 leading-relaxed">
+                This project is a high-performance, production-ready B2B web application for <strong>Bilal Decor Studio</strong> (Marquee Ceilings &amp; Stage Chadar Manufacturer in Lahore &amp; Gujranwala, Pakistan). It is specifically configured for seamless migration to another Antigravity account or developer instance.
+            </p>
+        </div>
+
+        <!-- Section 1: Business Context & Language Standard -->
+        <div class="space-y-4">
+            <h3 class="text-base font-bold text-slate-900 uppercase tracking-wider border-b border-slate-200 pb-2">
+                1. Business Model &amp; Strict Language Standard
+            </h3>
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-4 text-xs">
+                <div class="p-4 rounded-xl bg-slate-50 border border-slate-200 space-y-1.5">
+                    <h5 class="font-bold text-slate-900">Business Model:</h5>
+                    <p class="text-slate-600 leading-relaxed">
+                        Wholesale B2B manufacturing of Stage Chadrein (Stage Ceilings), Main Hall Ceilings, and Rahdari Canopies sold per square foot (Length × Width) to marquee decorators across Pakistan.
+                    </p>
+                </div>
+                <div class="p-4 rounded-xl bg-amber-50/70 border border-amber-200 space-y-1.5">
+                    <h5 class="font-bold text-amber-900">Strict Language Policy:</h5>
+                    <p class="text-amber-950 leading-relaxed">
+                        <strong>100% Everyday Roman Urdu.</strong> No raw English sentences for user UI, and no difficult literary Urdu words (avoid <em>"Markazi Page"</em>, <em>"Fi Murabba Foot"</em>). Use common terms: <em>"Home Page"</em>, <em>"Designs aur Rates"</em>, <em>"Kul Bill"</em>.
+                    </p>
+                </div>
+            </div>
+        </div>
+
+        <!-- Section 2: Technology Stack -->
+        <div class="space-y-4">
+            <h3 class="text-base font-bold text-slate-900 uppercase tracking-wider border-b border-slate-200 pb-2">
+                2. Technology Stack &amp; Zero-Dependency Architecture
+            </h3>
+            <table class="w-full text-left text-xs border border-slate-200 rounded-xl overflow-hidden">
+                <thead class="bg-[#FAF7F0] border-b border-slate-200 font-extrabold text-slate-800">
+                    <tr>
+                        <th class="p-3">Module</th>
+                        <th class="p-3">Technology</th>
+                        <th class="p-3">Role</th>
+                    </tr>
+                </thead>
+                <tbody class="divide-y divide-slate-100 text-slate-700">
+                    <tr>
+                        <td class="p-3 font-bold">Backend Server</td>
+                        <td class="p-3 font-mono">Node.js Built-ins (http, fs, path, crypto)</td>
+                        <td class="p-3">Zero npm dependencies. Runs on any Node 16+ instance.</td>
+                    </tr>
+                    <tr>
+                        <td class="p-3 font-bold">Security Engine</td>
+                        <td class="p-3 font-mono">PBKDF2 SHA-512 + Salt (10,000 rounds)</td>
+                        <td class="p-3">Server-side password hashing &amp; 15m anti-brute-force rate limiting.</td>
+                    </tr>
+                    <tr>
+                        <td class="p-3 font-bold">AI Estimator</td>
+                        <td class="p-3 font-mono">assets/js/ai_scheduler.js</td>
+                        <td class="p-3">Calculates factory production duration and calendar dispatch dates.</td>
+                    </tr>
+                    <tr>
+                        <td class="p-3 font-bold">3D Tactile UX</td>
+                        <td class="p-3 font-mono">popup.js + tilt3d.js + style.css</td>
+                        <td class="p-3">In-app 3D modal alerts (no browser alerts) &amp; card mouse perspective.</td>
+                    </tr>
+                    <tr>
+                        <td class="p-3 font-bold">Data &amp; Reports</td>
+                        <td class="p-3 font-mono">Chart.js + SheetJS + html2pdf.js</td>
+                        <td class="p-3">Sales graphs, native Excel (.XLSX) export, and PDF invoices.</td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+
+        <!-- Section 3: BDS Smart AI Delivery Rules -->
+        <div class="space-y-4">
+            <h3 class="text-base font-bold text-slate-900 uppercase tracking-wider border-b border-slate-200 pb-2">
+                3. BDS Smart AI Delivery Rules
+            </h3>
+            <div class="p-5 rounded-2xl bg-slate-50 border border-slate-200 space-y-3 text-xs">
+                <div class="flex items-start space-x-2">
+                    <span class="text-amber-600 font-bold">1.</span>
+                    <p class="text-slate-700"><strong>Base Duration:</strong> 5 to 6 working days (Standard for 1 to 3 chadrein).</p>
+                </div>
+                <div class="flex items-start space-x-2">
+                    <span class="text-amber-600 font-bold">2.</span>
+                    <p class="text-slate-700"><strong>Volume Rule (>3 Chadrein):</strong> Each additional chadar adds +1 working day (e.g. 4 sets = 6-7 days, 5 sets = 7-8 days).</p>
+                </div>
+                <div class="flex items-start space-x-2">
+                    <span class="text-amber-600 font-bold">3.</span>
+                    <p class="text-slate-700"><strong>Factory Queue Rush:</strong> If active factory queue has &ge; 5 orders, adds +2 days per batch of 5 queued jobs.</p>
+                </div>
+                <div class="flex items-start space-x-2">
+                    <span class="text-amber-600 font-bold">4.</span>
+                    <p class="text-slate-700"><strong>Fabric Area Factor:</strong> Fabrics &gt; 2,500 sq ft add +1 day; &gt; 5,000 sq ft add +2 days for multi-seam pleating and QC.</p>
+                </div>
+                <div class="flex items-start space-x-2">
+                    <span class="text-amber-600 font-bold">5.</span>
+                    <p class="text-slate-700"><strong>Calendar Dispatch Date:</strong> Automatically skips Sundays and calculates clean formatted dispatch dates (e.g. <em>28 Nov 2026</em>).</p>
+                </div>
+            </div>
+        </div>
+
+        <!-- Section 4: Security Architecture -->
+        <div class="space-y-4">
+            <h3 class="text-base font-bold text-slate-900 uppercase tracking-wider border-b border-slate-200 pb-2">
+                4. Enterprise Security Specifications
+            </h3>
+            <div class="grid grid-cols-1 sm:grid-cols-3 gap-3 text-xs">
+                <div class="p-3.5 bg-emerald-50 rounded-xl border border-emerald-300">
+                    <h5 class="font-bold text-emerald-950">PBKDF2 SHA-512</h5>
+                    <p class="text-emerald-900/80 text-[11px] mt-1">10,000 iterations with cryptographically random salt. Zero passwords in client code.</p>
+                </div>
+                <div class="p-3.5 bg-emerald-50 rounded-xl border border-emerald-300">
+                    <h5 class="font-bold text-emerald-950">Anti-Brute-Force</h5>
+                    <p class="text-emerald-900/80 text-[11px] mt-1">5 failed password attempts locks client IP for 15 minutes with remaining attempt counter.</p>
+                </div>
+                <div class="p-3.5 bg-emerald-50 rounded-xl border border-emerald-300">
+                    <h5 class="font-bold text-emerald-950">Bearer Token Auth</h5>
+                    <p class="text-emerald-900/80 text-[11px] mt-1">64-character hex session token protects customer data and CSV exports behind HTTP 401.</p>
+                </div>
+            </div>
+        </div>
+
+        <!-- Section 5: Startup Instructions -->
+        <div class="space-y-4">
+            <h3 class="text-base font-bold text-slate-900 uppercase tracking-wider border-b border-slate-200 pb-2">
+                5. Running the Application
+            </h3>
+            <div class="p-4 rounded-xl bg-slate-900 text-amber-300 font-mono text-xs space-y-1">
+                <p># 1. Start the server:</p>
+                <p class="text-white">node server.js</p>
+                <p class="text-slate-400 mt-2"># Server runs at http://localhost:3000</p>
+                <p class="text-slate-400"># Admin access: http://localhost:3000/#admin (Password: bilal123)</p>
+            </div>
+        </div>
+
+        <!-- Footer -->
+        <div class="pt-6 border-t border-slate-200 flex flex-col sm:flex-row items-center justify-between text-xs text-slate-400">
+            <p>© 2024-2026 Bilal Decor Studio. Tamam haqooq mehfooz hain.</p>
+            <p>Designed for Luxury Marquee Decorators of Pakistan</p>
+        </div>
+    </div>
+
+    <script>
+        function downloadAsPDF() {
+            const el = document.getElementById('pdfContent');
+            const opt = {
+                margin:       10,
+                filename:     'Bilal_Decor_Studio_Project_Overview.pdf',
+                image:        { type: 'jpeg', quality: 0.98 },
+                html2canvas:  { scale: 2, useCORS: true },
+                jsPDF:        { unit: 'mm', format: 'a4', orientation: 'portrait' }
+            };
+            html2pdf().set(opt).from(el).save();
+        }
+    </script>
+</body>
+</html>
