@@ -11,6 +11,10 @@ database/*.csv
 database/*.log
 !database/.gitkeep
 
+# Heavy Raw Media Source Downloads (Protected from Git repo bloat)
+assets/marquee_drive_raw/
+assets/extracted_frames/
+
 # Operating System Files
 .DS_Store
 Thumbs.db

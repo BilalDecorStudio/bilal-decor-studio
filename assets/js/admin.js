@@ -747,8 +747,10 @@ Aap website par apna PIN laga kar live order track kar sakte hain.
         settings.bank.title = document.getElementById('settingBankTitle')?.value.trim() || settings.bank.title;
         settings.bank.accountNo = document.getElementById('settingBankAcc')?.value.trim() || settings.bank.accountNo;
         settings.bank.iban = document.getElementById('settingBankIban')?.value.trim() || settings.bank.iban;
-        settings.headerVideos.video1.url = document.getElementById('settingVideo1Url')?.value.trim() || settings.headerVideos.video1.url;
-        settings.headerVideos.video2.url = document.getElementById('settingVideo2Url')?.value.trim() || settings.headerVideos.video2.url;
+        const rawV1 = document.getElementById('settingVideo1Url')?.value.trim();
+        const rawV2 = document.getElementById('settingVideo2Url')?.value.trim();
+        if (rawV1) settings.headerVideos.video1.url = (window.App && App.formatYouTubeEmbedUrl) ? App.formatYouTubeEmbedUrl(rawV1) : rawV1;
+        if (rawV2) settings.headerVideos.video2.url = (window.App && App.formatYouTubeEmbedUrl) ? App.formatYouTubeEmbedUrl(rawV2) : rawV2;
 
         Store.saveSettings(settings);
         alert("Settings aur Accounts save ho gaye.");

@@ -37,12 +37,12 @@ const defaultSettings = {
     headerVideos: {
         video1: {
             title: "Shahi Stage Chadar - Live Event Look",
-            url: "https://www.youtube.com/embed/ScMzIvxBSi4",
+            url: "https://www.youtube.com/embed/XulZSbXHsUo",
             source: "embed"
         },
         video2: {
             title: "Grand Hall Ceiling aur Rahdari Fall Drapery",
-            url: "https://www.youtube.com/embed/EngW7tLk6R8",
+            url: "https://www.youtube.com/embed/YI0bGkoQvNg",
             source: "embed"
         }
     }
@@ -599,7 +599,16 @@ class Store {
     }
 
     static getSettings() {
-        return this.get(STORAGE_KEYS.SETTINGS, defaultSettings);
+        const settings = this.get(STORAGE_KEYS.SETTINGS, defaultSettings);
+        if (settings && settings.headerVideos) {
+            if (!settings.headerVideos.video1 || settings.headerVideos.video1.url.includes('ScMzIvxBSi4')) {
+                settings.headerVideos.video1 = defaultSettings.headerVideos.video1;
+            }
+            if (!settings.headerVideos.video2 || settings.headerVideos.video2.url.includes('EngW7tLk6R8')) {
+                settings.headerVideos.video2 = defaultSettings.headerVideos.video2;
+            }
+        }
+        return settings || defaultSettings;
     }
 
     static saveSettings(settings) {

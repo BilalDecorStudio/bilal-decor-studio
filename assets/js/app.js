@@ -623,9 +623,41 @@ Payment screenshot sath me bhej raha hoon. Barahe meharbani confirm karein.`;
         document.body.classList.remove('overflow-hidden');
     },
 
+    formatYouTubeEmbedUrl(url) {
+        if (!url) return '';
+        const clean = String(url).trim();
+        if (clean.includes('youtube.com/embed/')) {
+            if (!clean.includes('autoplay=')) {
+                return clean + (clean.includes('?') ? '&autoplay=1&rel=0' : '?autoplay=1&rel=0');
+            }
+            return clean;
+        }
+
+        let videoId = '';
+        const youtuMatch = clean.match(/youtu\.be\/([a-zA-Z0-9_-]+)/);
+        if (youtuMatch) {
+            videoId = youtuMatch[1];
+        } else {
+            const watchMatch = clean.match(/[?&]v=([a-zA-Z0-9_-]+)/);
+            if (watchMatch) {
+                videoId = watchMatch[1];
+            } else {
+                const shortsMatch = clean.match(/youtube\.com\/shorts\/([a-zA-Z0-9_-]+)/);
+                if (shortsMatch) {
+                    videoId = shortsMatch[1];
+                }
+            }
+        }
+
+        if (videoId) {
+            return `https://www.youtube.com/embed/${videoId}?autoplay=1&rel=0`;
+        }
+        return clean;
+    },
+
     playHeaderVideo(videoKey) {
         const settings = Store.getSettings();
-        const video = settings.headerVideos[videoKey];
+        const video = settings.headerVideos ? settings.headerVideos[videoKey] : null;
         if (!video) return;
 
         const modal = document.getElementById('headerVideoModal');
@@ -633,7 +665,7 @@ Payment screenshot sath me bhej raha hoon. Barahe meharbani confirm karein.`;
         const title = document.getElementById('headerVideoTitle');
 
         if (title) title.innerText = video.title;
-        if (iframe) iframe.src = video.url;
+        if (iframe) iframe.src = this.formatYouTubeEmbedUrl(video.url);
 
         if (modal) {
             modal.classList.remove('hidden');
