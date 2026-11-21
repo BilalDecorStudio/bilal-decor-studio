@@ -797,31 +797,55 @@
 
                 <!-- Tab: Business Analytics & Sales Graphs -->
                 <div id="adminTabAnalytics" class="admin-tab-content hidden space-y-6">
-                    <div class="luxury-card p-6 sm:p-8 rounded-3xl bg-white border border-slate-200">
-                        <!-- Header -->
-                        <div class="flex flex-col sm:flex-row sm:items-center justify-between pb-6 border-b border-slate-200 gap-4">
+                    <div class="luxury-card p-6 sm:p-8 rounded-3xl bg-white border border-slate-200 space-y-6">
+                        <!-- Top Header with Duration Filters -->
+                        <div class="flex flex-col lg:flex-row lg:items-center justify-between pb-6 border-b border-slate-200 gap-4">
                             <div>
                                 <div class="inline-flex items-center space-x-2 px-3 py-1 rounded-full bg-emerald-100 text-emerald-900 text-xs font-bold mb-2">
-                                    <span>📈 Live Business Insights</span>
+                                    <span>📈 Live Executive Intelligence</span>
                                     <span>•</span>
-                                    <span>Monthly Trends</span>
+                                    <span>Marquee Sales &amp; Growth Hub</span>
                                 </div>
-                                <h3 class="text-xl sm:text-2xl font-black text-slate-900">Mahana Sales &amp; Business Performance Graphs</h3>
+                                <h3 class="text-xl sm:text-2xl font-black text-slate-900 font-serif-luxury">
+                                    Sales Turnover, Duration Graphs aur Munafa Report
+                                </h3>
                                 <p class="text-xs text-slate-500 mt-1 max-w-xl">
-                                    Mahine ke hisaab se sales kitni aayin, fabric ki kitni production hui, aur kin shehron se kitna order volume aya.
+                                    Mahana sales, pichlay mahine se muqabla, mukhtalif durations (1, 3, 6, 12 mahine aur lifetime), shehron ka hissa aur fabric production.
                                 </p>
                             </div>
-                            <button onclick="Analytics.render()" class="px-4 py-2 rounded-xl bg-slate-100 hover:bg-slate-200 text-slate-700 text-xs font-bold border border-slate-300 transition flex items-center space-x-1.5 w-max">
-                                <span>🔄 Graph Refresh Karein</span>
-                            </button>
+
+                            <!-- Duration Filter Tabs (Interactive) -->
+                            <div class="flex flex-wrap items-center gap-2">
+                                <button onclick="Analytics.setDuration('1m')" data-duration="1m" class="analytics-duration-btn px-3.5 py-2 rounded-xl text-xs font-bold text-slate-600 hover:text-slate-900 bg-white hover:bg-slate-50 border border-slate-200 transition">
+                                    1 Mahina (Weekly)
+                                </button>
+                                <button onclick="Analytics.setDuration('3m')" data-duration="3m" class="analytics-duration-btn px-3.5 py-2 rounded-xl text-xs font-bold text-slate-600 hover:text-slate-900 bg-white hover:bg-slate-50 border border-slate-200 transition">
+                                    3 Mahine
+                                </button>
+                                <button onclick="Analytics.setDuration('6m')" data-duration="6m" class="analytics-duration-btn px-3.5 py-2 rounded-xl text-xs font-black bg-[#0F172A] text-amber-300 shadow-sm border border-[#0F172A] transition">
+                                    6 Mahine
+                                </button>
+                                <button onclick="Analytics.setDuration('12m')" data-duration="12m" class="analytics-duration-btn px-3.5 py-2 rounded-xl text-xs font-bold text-slate-600 hover:text-slate-900 bg-white hover:bg-slate-50 border border-slate-200 transition">
+                                    12 Mahine (1 Saal)
+                                </button>
+                                <button onclick="Analytics.setDuration('lifetime')" data-duration="lifetime" class="analytics-duration-btn px-3.5 py-2 rounded-xl text-xs font-bold text-slate-600 hover:text-slate-900 bg-white hover:bg-slate-50 border border-slate-200 transition">
+                                    👑 Lifetime Record
+                                </button>
+                                <button onclick="Analytics.render()" class="p-2 rounded-xl bg-slate-100 hover:bg-slate-200 text-slate-700 text-xs font-bold border border-slate-300 transition" title="Refresh Graphs">
+                                    🔄
+                                </button>
+                            </div>
                         </div>
 
+                        <!-- Special Month-over-Month Comparison Widget (Is Mahina vs Pichla Mahina) -->
+                        <div id="analyticsMonthComparisonBox"></div>
+
                         <!-- 4 Executive KPI Metric Cards -->
-                        <div class="grid grid-cols-2 lg:grid-cols-4 gap-4 my-6">
+                        <div class="grid grid-cols-2 lg:grid-cols-4 gap-4">
                             <div class="p-4 rounded-2xl bg-[#FDFBF7] border border-amber-200">
                                 <span class="text-[11px] font-bold text-slate-500 uppercase tracking-wider">Total Sales Turnover</span>
                                 <p id="analyticsKpiRevenue" class="text-xl sm:text-2xl font-black text-amber-900 mt-1 font-mono">Rs. 0</p>
-                                <span class="inline-block mt-1 text-[10px] font-bold text-emerald-700 bg-emerald-50 px-2 py-0.5 rounded-full border border-emerald-200">↑ +18.5% This Month</span>
+                                <span class="inline-block mt-1 text-[10px] font-bold text-emerald-700 bg-emerald-50 px-2 py-0.5 rounded-full border border-emerald-200">↑ Selected Duration</span>
                             </div>
 
                             <div class="p-4 rounded-2xl bg-[#FDFBF7] border border-amber-200">
@@ -843,19 +867,55 @@
                             </div>
                         </div>
 
-                        <!-- Graph 1: Main Monthly Sales & Turnover (Combo Chart) -->
-                        <div class="p-5 sm:p-6 rounded-2xl bg-[#FAF7F0] border border-amber-200 mb-6">
-                            <div class="flex flex-col sm:flex-row sm:items-center justify-between mb-4 gap-2">
+                        <!-- Graph 1: Dynamic Duration Sales & Fabric Area (Combo Chart) -->
+                        <div class="p-5 sm:p-6 rounded-2xl bg-[#FAF7F0] border border-amber-200">
+                            <div class="flex flex-col sm:flex-row sm:items-center justify-between mb-4 gap-3">
                                 <div>
-                                    <h4 class="font-bold text-slate-900 text-sm sm:text-base">Mahana Sales Turnover &amp; Fabric Area (2024)</h4>
-                                    <p class="text-xs text-slate-500">Bars = Total Sales (PKR) | Green Line = Total Fabric Produced (Sq Ft)</p>
+                                    <h4 id="mainChartTitle" class="font-bold text-slate-900 text-sm sm:text-base">Mahana Sales Turnover &amp; Fabric Area</h4>
+                                    <p id="mainChartSubtitle" class="text-xs text-slate-500">Bars = Total Sales (PKR) | Green Line = Total Fabric Produced (Sq Ft)</p>
                                 </div>
-                                <span class="text-xs px-3 py-1 rounded-full bg-amber-100 text-amber-900 font-bold border border-amber-300 w-max">
-                                    Last 6 Months Trends
-                                </span>
+
+                                <!-- Metric View Toggles -->
+                                <div class="flex items-center space-x-1.5 p-1 rounded-xl bg-white border border-slate-200 w-max">
+                                    <button onclick="Analytics.setMetric('combo')" data-metric="combo" class="analytics-metric-btn px-3 py-1.5 rounded-lg text-xs font-black bg-amber-100 text-amber-900 border border-amber-300 shadow-xs">
+                                        Combo (Sales + Area)
+                                    </button>
+                                    <button onclick="Analytics.setMetric('revenue')" data-metric="revenue" class="analytics-metric-btn px-3 py-1.5 rounded-lg text-xs font-bold text-slate-500 hover:text-slate-800 bg-white border border-slate-200">
+                                        Sirf Sales (PKR)
+                                    </button>
+                                    <button onclick="Analytics.setMetric('fabric')" data-metric="fabric" class="analytics-metric-btn px-3 py-1.5 rounded-lg text-xs font-bold text-slate-500 hover:text-slate-800 bg-white border border-slate-200">
+                                        Sirf Fabric (Sq Ft)
+                                    </button>
+                                </div>
                             </div>
                             <div class="relative h-72 sm:h-80 w-full">
                                 <canvas id="monthlySalesChart"></canvas>
+                            </div>
+                        </div>
+
+                        <!-- Detailed Duration Performance Table -->
+                        <div class="rounded-2xl border border-slate-200 overflow-hidden bg-white shadow-xs">
+                            <div class="px-5 py-3.5 bg-slate-50 border-b border-slate-200 flex items-center justify-between">
+                                <div class="flex items-center space-x-2">
+                                    <span class="text-base">📋</span>
+                                    <h4 class="font-bold text-slate-900 text-xs sm:text-sm">Duration Breakup Record (Detailed Table)</h4>
+                                </div>
+                                <span class="text-[11px] text-slate-500 font-medium">Selected Period ke Har Mahine ka Data</span>
+                            </div>
+                            <div class="overflow-x-auto">
+                                <table class="w-full text-left">
+                                    <thead class="bg-slate-100/75 border-b border-slate-200 text-[11px] uppercase tracking-wider text-slate-600 font-extrabold">
+                                        <tr>
+                                            <th class="py-2.5 px-3">Mahina / Muddat</th>
+                                            <th class="py-2.5 px-3">Total Sales (PKR)</th>
+                                            <th class="py-2.5 px-3">Fabric Production</th>
+                                            <th class="py-2.5 px-3 text-center">Orders Volume</th>
+                                            <th class="py-2.5 px-3">Average Rate</th>
+                                            <th class="py-2.5 px-3 text-right">Growth / Farq</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody id="analyticsBreakdownTableBody"></tbody>
+                                </table>
                             </div>
                         </div>
 
@@ -884,16 +944,36 @@
                             </div>
                         </div>
 
-                        <!-- Business Growth Insights Callout -->
-                        <div class="mt-6 p-4 rounded-2xl bg-amber-50/70 border border-amber-200 flex flex-col sm:flex-row items-start gap-3">
-                            <span class="text-2xl">💡</span>
-                            <div class="text-xs text-amber-950">
-                                <h4 class="font-bold text-amber-900 mb-1">Executive Business Summary:</h4>
-                                <ul class="list-disc list-inside space-y-1 text-amber-900/90 leading-relaxed">
-                                    <li><strong>Peak Season:</strong> October se February ke doran wedding seasons ki wajah se marquee ceiling orders me <strong>+45%</strong> ka izafa dekha gaya hai.</li>
-                                    <li><strong>Top Markets:</strong> Lahore aur Gujranwala se kul orders ka <strong>65%</strong> volume generate ho raha hai, jab ke Faisalabad aur Rawalpindi se runner up demand hai.</li>
-                                    <li><strong>Most Popular Design:</strong> Royal Mughal Gold Velvet Stage Chadar (50x30 ft) sab se ziada re-order hone wala product hai.</li>
-                                </ul>
+                        <!-- Advanced Business Intelligence & Demand Radar -->
+                        <div class="grid grid-cols-1 md:grid-cols-3 gap-4 pt-2">
+                            <div class="p-4 rounded-2xl bg-amber-50/70 border border-amber-200">
+                                <div class="flex items-center space-x-2 text-amber-900 font-bold text-xs mb-1">
+                                    <span>👑</span>
+                                    <span>Wedding Season Demand Radar</span>
+                                </div>
+                                <p class="text-[11px] text-amber-950/80 leading-relaxed">
+                                    Winter wedding season (Oct – Feb) mein orders ka volume <strong>+45%</strong> peak par rehta hai. Velvet stage chadron ki advance booking sab se tez hai.
+                                </p>
+                            </div>
+
+                            <div class="p-4 rounded-2xl bg-emerald-50/70 border border-emerald-200">
+                                <div class="flex items-center space-x-2 text-emerald-900 font-bold text-xs mb-1">
+                                    <span>💵</span>
+                                    <span>Cash Flow &amp; Advance Health</span>
+                                </div>
+                                <p class="text-[11px] text-emerald-950/80 leading-relaxed">
+                                    B2B clients se <strong>72% advance collection</strong> cutting shuru hone se pehle wasool ho rahi hai. Baqaya raqam cargo bilty par clear hoti hai.
+                                </p>
+                            </div>
+
+                            <div class="p-4 rounded-2xl bg-blue-50/70 border border-blue-200">
+                                <div class="flex items-center space-x-2 text-blue-900 font-bold text-xs mb-1">
+                                    <span>🎯</span>
+                                    <span>Top Growth Markets</span>
+                                </div>
+                                <p class="text-[11px] text-blue-950/80 leading-relaxed">
+                                    Lahore aur Gujranwala primary hubs hain, jabke Faisalabad aur Multan se grand marquee banquets ke repeat orders mein <strong>+31%</strong> izafa hua hai.
+                                </p>
                             </div>
                         </div>
 
