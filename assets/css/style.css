@@ -262,19 +262,61 @@ input[type=number] {
     background: linear-gradient(180deg, #10B981 0%, #C59A3F 100%);
 }
 
-/* Thermal receipt print view */
+/* High-Fidelity Print Engine (A4 B2B Invoice & Thermal Slip) */
 @media print {
+    @page {
+        size: A4 portrait;
+        margin: 8mm;
+    }
     body * {
-        visibility: hidden;
+        visibility: hidden !important;
+    }
+    #invoiceModal, #invoiceModal * {
+        visibility: visible !important;
+    }
+    #invoiceModal {
+        position: absolute !important;
+        left: 0 !important;
+        top: 0 !important;
+        width: 100% !important;
+        height: auto !important;
+        background: #ffffff !important;
+        padding: 0 !important;
+        margin: 0 !important;
+        overflow: visible !important;
+        display: block !important;
+    }
+    #invoiceModal .sticky, 
+    #invoiceModal button,
+    #invoiceModal .bg-\[\#0F172A\] {
+        display: none !important;
+    }
+    #invoiceContentArea {
+        padding: 0 !important;
+        margin: 0 !important;
+    }
+    #invoiceDocument {
+        visibility: visible !important;
+        position: relative !important;
+        width: 100% !important;
+        max-width: 100% !important;
+        margin: 0 auto !important;
+        padding: 0 !important;
+        border: none !important;
+        box-shadow: none !important;
+        border-radius: 0 !important;
+    }
+    #invoiceDocument * {
+        visibility: visible !important;
     }
     #printableSlip, #printableSlip * {
-        visibility: visible;
+        visibility: visible !important;
     }
     #printableSlip {
-        position: absolute;
-        left: 0;
-        top: 0;
-        width: 100%;
+        position: absolute !important;
+        left: 0 !important;
+        top: 0 !important;
+        width: 100% !important;
         background: #fff !important;
         color: #000 !important;
     }
