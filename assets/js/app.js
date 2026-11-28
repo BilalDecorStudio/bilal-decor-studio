@@ -118,6 +118,10 @@ const App = {
         if (viewName === 'karigar' && window.KarigarApp) {
             KarigarApp.checkWorkerSession();
         }
+
+        if (viewName === 'contact' && window.ContactMap) {
+            ContactMap.onViewShown();
+        }
     },
 
     filterCategory(category) {

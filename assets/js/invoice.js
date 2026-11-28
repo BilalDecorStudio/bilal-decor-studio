@@ -179,15 +179,15 @@ const Invoice = {
 
         this.currentData = data;
         const settings = (window.Store && Store.getSettings) ? Store.getSettings() : {
-            phoneDisplay: "0300-1234567",
-            whatsappNumber: "923001234567",
+            phoneDisplay: "0300-456043",
+            whatsappNumber: "92300456043",
             bank: {
                 bankName: "Meezan Bank Ltd",
                 title: "Bilal Decor Studio",
                 accountNo: "0102-0108928371"
             },
             jazzcash: {
-                number: "0300-1234567",
+                number: "0300-456043",
                 title: "Bilal Decor Studio"
             }
         };
@@ -217,7 +217,7 @@ const Invoice = {
                         <div>
                             <h1 class="text-xl font-extrabold text-slate-900 tracking-wide font-serif-luxury" style="letter-spacing: 1px; margin: 0; line-height: 1.2;">BILAL DECOR STUDIO</h1>
                             <p class="text-[11px] text-amber-800 font-bold uppercase tracking-wider" style="margin: 2px 0 0 0;">B2B Marquee Ceilings & Stage Drapery Manufacturer</p>
-                            <p class="text-[10.5px] text-slate-500" style="margin: 2px 0 0 0;">📍 Lahore & Gujranwala Workshop Hub &nbsp;|&nbsp; 📞 ${settings.phoneDisplay || '0300-1234567'} &nbsp;|&nbsp; 💬 WhatsApp</p>
+                            <p class="text-[10.5px] text-slate-500" style="margin: 2px 0 0 0;">📍 Lahore & Gujranwala Workshop Hub &nbsp;|&nbsp; 📞 ${settings.phoneDisplay || '0300-456043'} &nbsp;|&nbsp; 💬 WhatsApp</p>
                         </div>
                     </div>
 
@@ -317,7 +317,7 @@ const Invoice = {
                         </div>
                         <div class="p-2 bg-white rounded-lg border border-slate-200 text-slate-700">
                             <p class="font-bold text-slate-900 text-[11px]">JazzCash / EasyPaisa</p>
-                            <p class="font-mono text-[11px]">Number: <strong class="text-slate-900">${settings.jazzcash?.number || '0300-1234567'}</strong></p>
+                            <p class="font-mono text-[11px]">Number: <strong class="text-slate-900">${settings.jazzcash?.number || '0300-456043'}</strong></p>
                             <p class="text-[9.5px] text-slate-500">Title: ${settings.jazzcash?.title || 'Bilal Decor Studio'}</p>
                         </div>
                     </div>

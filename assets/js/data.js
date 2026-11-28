@@ -16,16 +16,16 @@ const STORAGE_KEYS = {
 const defaultSettings = {
     businessName: "Bilal Decor Studio",
     tagline: "Premium Marquee Ceiling, Chadrein aur Decoration Manufacturer - Wholesale B2B Rates",
-    whatsappNumber: "923001234567",
-    phoneDisplay: "0300-1234567",
-    email: "info@bilaldecorstudio.com",
-    address: "Circular Road / Marquee Market Hub, Lahore & Gujranwala, Pakistan",
+    whatsappNumber: "92300456043",
+    phoneDisplay: "0300-456043",
+    email: "contact@bilaldecorstudio.com",
+    address: "Chungi Amer Sidhu, Ferozepur Road, Lahore, Pakistan",
     jazzcash: {
-        number: "0300-1234567",
+        number: "0300-456043",
         title: "Bilal Decor Studio"
     },
     easypaisa: {
-        number: "0345-1234567",
+        number: "0300-456043",
         title: "Bilal Decor Studio"
     },
     bank: {
@@ -614,12 +614,24 @@ class Store {
 
     static getSettings() {
         const settings = this.get(STORAGE_KEYS.SETTINGS, defaultSettings);
-        if (settings && settings.headerVideos) {
-            if (!settings.headerVideos.video1 || settings.headerVideos.video1.url.includes('ScMzIvxBSi4')) {
-                settings.headerVideos.video1 = defaultSettings.headerVideos.video1;
+        if (settings) {
+            if (settings.phoneDisplay === "0300-1234567") {
+                settings.phoneDisplay = defaultSettings.phoneDisplay;
+                settings.whatsappNumber = defaultSettings.whatsappNumber;
             }
-            if (!settings.headerVideos.video2 || settings.headerVideos.video2.url.includes('EngW7tLk6R8')) {
-                settings.headerVideos.video2 = defaultSettings.headerVideos.video2;
+            if (settings.email === "info@bilaldecorstudio.com") {
+                settings.email = defaultSettings.email;
+            }
+            if (settings.address && settings.address.includes("Circular Road")) {
+                settings.address = defaultSettings.address;
+            }
+            if (settings.headerVideos) {
+                if (!settings.headerVideos.video1 || settings.headerVideos.video1.url.includes('ScMzIvxBSi4')) {
+                    settings.headerVideos.video1 = defaultSettings.headerVideos.video1;
+                }
+                if (!settings.headerVideos.video2 || settings.headerVideos.video2.url.includes('EngW7tLk6R8')) {
+                    settings.headerVideos.video2 = defaultSettings.headerVideos.video2;
+                }
             }
         }
         return settings || defaultSettings;
