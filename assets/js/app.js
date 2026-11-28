@@ -26,6 +26,10 @@ const App = {
             Tracker.renderActivePipeline();
         }
 
+        if (window.KarigarApp) {
+            KarigarApp.init();
+        }
+
         window.addEventListener('hashchange', () => this.handleHashChange());
         this.handleHashChange();
 
@@ -109,6 +113,10 @@ const App = {
 
         if (viewName === 'admin') {
             this.handleAdminView();
+        }
+
+        if (viewName === 'karigar' && window.KarigarApp) {
+            KarigarApp.checkWorkerSession();
         }
     },
 

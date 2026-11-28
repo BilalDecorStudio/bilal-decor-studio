@@ -66,6 +66,10 @@
                     <span>📦 Order Track Karein</span>
                 </a>
                 <span class="text-slate-600">|</span>
+                <a href="#karigar" class="hover:text-amber-300 flex items-center space-x-1 font-bold text-amber-400">
+                    <span>🪡 Karigar Portal</span>
+                </a>
+                <span class="text-slate-600">|</span>
                 <a href="#admin" class="hover:text-amber-300 flex items-center space-x-1 font-bold">
                     <span>🔐 Admin Portal</span>
                 </a>
@@ -101,6 +105,9 @@
                 <a href="#tracker" class="px-3.5 py-2 rounded-xl hover:text-amber-800 hover:bg-amber-50/80 transition">
                     Order Status Check Karein
                 </a>
+                <a href="#karigar" class="px-3.5 py-2 rounded-xl text-amber-900 bg-amber-100/70 hover:bg-amber-200/80 font-extrabold transition flex items-center space-x-1 shadow-xs">
+                    <span>🪡 Karigar Portal</span>
+                </a>
             </nav>
 
             <!-- Header Action Buttons -->
@@ -133,6 +140,7 @@
             <a href="#calculator" class="block px-3 py-2 rounded-lg text-sm font-bold text-slate-700 hover:text-amber-800 hover:bg-amber-50">Size aur Bill Calculator</a>
             <a href="#portfolio" class="block px-3 py-2 rounded-lg text-sm font-bold text-slate-700 hover:text-amber-800 hover:bg-amber-50">Pichla Kaam aur Reviews</a>
             <a href="#tracker" class="block px-3 py-2 rounded-lg text-sm font-bold text-slate-700 hover:text-amber-800 hover:bg-amber-50">Order Status Check Karein</a>
+            <a href="#karigar" class="block px-3 py-2 rounded-lg text-sm font-bold text-amber-900 bg-amber-50 hover:bg-amber-100">🪡 Karigar Portal (Hisaab-Kitab)</a>
             <a href="#admin" class="block px-3 py-2 rounded-lg text-sm font-bold text-amber-800 hover:bg-amber-50">🔐 Admin Panel</a>
         </div>
     </header>
@@ -759,6 +767,9 @@
                     </button>
                     <button onclick="App.switchAdminTab('database')" id="adminTabBtnDatabase" class="px-5 py-3 rounded-t-xl text-xs md:text-sm font-bold text-slate-600 hover:text-slate-900 bg-white border-t border-x border-slate-200">
                         📊 Customer List aur Excel Download
+                    </button>
+                    <button onclick="App.switchAdminTab('karigars')" id="adminTabBtnKarigars" class="px-5 py-3 rounded-t-xl text-xs md:text-sm font-bold text-slate-600 hover:text-slate-900 bg-white border-t border-x border-slate-200">
+                        🪡 Karigar Khata &amp; Roznamcha
                     </button>
                     <button onclick="App.switchAdminTab('settings')" id="adminTabBtnSettings" class="px-5 py-3 rounded-t-xl text-xs md:text-sm font-bold text-slate-600 hover:text-slate-900 bg-white border-t border-x border-slate-200">
                         ⚙️ Bank Accounts aur Settings
@@ -1442,9 +1453,532 @@
                     </div>
                 </div>
 
+                <!-- ================================================= -->
+                <!-- Tab 7: Karigar Khata & Roznamcha Management -->
+                <!-- ================================================= -->
+                <div id="adminTabKarigars" class="admin-tab-content hidden space-y-6">
+                    <!-- Top Action Banner -->
+                    <div class="flex flex-col md:flex-row md:items-center justify-between gap-4 bg-white p-6 rounded-3xl border border-amber-200/80 shadow-sm">
+                        <div>
+                            <div class="flex items-center space-x-2">
+                                <span class="text-2xl">🪡</span>
+                                <h2 class="text-xl md:text-2xl font-bold text-slate-900 font-serif-luxury">Karigar Khata &amp; Roznamcha Management</h2>
+                            </div>
+                            <p class="text-xs text-slate-500 mt-1">
+                                Karigaron ke roz ke kaam (Chadar/Ceiling, Size, Rate Rs. 12/custom), payments deduction aur baqi balance ka mukammal hisaab.
+                            </p>
+                        </div>
+                        <div class="flex flex-wrap items-center gap-2">
+                            <button type="button" onclick="KarigarApp.openWorkEntryModal()" class="px-4 py-2.5 bg-emerald-600 hover:bg-emerald-700 text-white rounded-xl text-xs font-bold transition flex items-center space-x-1.5 shadow-md">
+                                <span>➕ Roznamcha Kaam Darj Karein</span>
+                            </button>
+                            <button type="button" onclick="KarigarApp.openPaymentModal()" class="px-4 py-2.5 bg-amber-600 hover:bg-amber-700 text-white rounded-xl text-xs font-bold transition flex items-center space-x-1.5 shadow-md">
+                                <span>💵 Paisa Dain (Payment)</span>
+                            </button>
+                            <button type="button" onclick="KarigarApp.openAddKarigarModal()" class="px-4 py-2.5 bg-[#0F172A] hover:bg-slate-800 text-amber-300 rounded-xl text-xs font-bold transition flex items-center space-x-1.5 shadow-md">
+                                <span>👤 Naya Karigar Add Karein</span>
+                            </button>
+                        </div>
+                    </div>
+
+                    <!-- 4 Karigar KPI Cards -->
+                    <div class="grid grid-cols-2 lg:grid-cols-4 gap-4">
+                        <div class="p-4 rounded-2xl bg-white border border-slate-200 shadow-sm">
+                            <span class="text-[11px] font-bold text-slate-500 uppercase tracking-wider">Kul Karigars</span>
+                            <p id="karigarKPITotal" class="text-2xl font-black text-slate-900 mt-1 font-mono">0</p>
+                            <p class="text-[10px] text-slate-400 mt-0.5">Active Masters &amp; Tailors</p>
+                        </div>
+                        <div class="p-4 rounded-2xl bg-white border border-slate-200 shadow-sm">
+                            <span class="text-[11px] font-bold text-slate-500 uppercase tracking-wider">Kul Kaam (Gross Earned)</span>
+                            <p id="karigarKPIWork" class="text-2xl font-black text-slate-900 mt-1 font-mono">Rs. 0</p>
+                            <p class="text-[10px] text-slate-400 mt-0.5">Recorded Work Value</p>
+                        </div>
+                        <div class="p-4 rounded-2xl bg-white border border-slate-200 shadow-sm">
+                            <span class="text-[11px] font-bold text-slate-500 uppercase tracking-wider">Kul Adaigi (Total Paid)</span>
+                            <p id="karigarKPIPaid" class="text-2xl font-black text-emerald-700 mt-1 font-mono">Rs. 0</p>
+                            <p class="text-[10px] text-slate-400 mt-0.5">Cash / Online Transfers</p>
+                        </div>
+                        <div class="p-4 rounded-2xl bg-white border border-slate-200 shadow-sm">
+                            <span class="text-[11px] font-bold text-slate-500 uppercase tracking-wider">Net Baqi Balance</span>
+                            <p id="karigarKPIBalance" class="text-2xl font-black text-rose-600 mt-1 font-mono">Rs. 0</p>
+                            <p class="text-[10px] text-slate-400 mt-0.5">Payable To Workers</p>
+                        </div>
+                    </div>
+
+                    <!-- Karigar Roster Table -->
+                    <div class="bg-white rounded-3xl border border-slate-200 p-6 shadow-sm space-y-4">
+                        <div class="flex flex-col sm:flex-row items-center justify-between gap-3">
+                            <div class="relative w-full sm:w-80">
+                                <span class="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none text-slate-400">🔍</span>
+                                <input type="text" id="karigarSearchInput" oninput="KarigarApp.renderAdminKarigarTable()" placeholder="Karigar naam, phone ya hunar se search karein..." class="w-full pl-9 pr-3 py-2 bg-slate-50 border border-slate-300 rounded-xl text-xs text-slate-900 focus:bg-white focus:border-amber-600 transition">
+                            </div>
+                            <div class="text-xs text-slate-500 font-medium">
+                                Standard Rate: <span class="font-bold text-amber-800 font-mono">Rs. 12 / sq ft</span> (Har item par tabdeel ho sakta hai)
+                            </div>
+                        </div>
+
+                        <div class="overflow-x-auto rounded-2xl border border-slate-200">
+                            <table class="w-full text-left border-collapse">
+                                <thead class="bg-[#FAF7F0] border-b border-amber-200 text-[11px] uppercase tracking-wider text-slate-700 font-extrabold">
+                                    <tr>
+                                        <th class="py-3 px-4">Karigar Profile</th>
+                                        <th class="py-3 px-4">Hunar (Skill)</th>
+                                        <th class="py-3 px-4">Rabta Phone</th>
+                                        <th class="py-3 px-4">Standard Rate</th>
+                                        <th class="py-3 px-4">Kul Kaam &amp; Adaigi</th>
+                                        <th class="py-3 px-4">Baqi Balance</th>
+                                        <th class="py-3 px-4 text-right">Actions</th>
+                                    </tr>
+                                </thead>
+                                <tbody id="karigarTableBody">
+                                    <!-- Populated by KarigarApp.renderAdminKarigarTable() -->
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+
             </div>
         </div>
     </main>
+
+    <!-- ================================================= -->
+    <!-- VIEW 7: KARIGAR (WORKER) PORTAL DASHBOARD -->
+    <!-- ================================================= -->
+    <main id="view-karigar" class="app-view hidden flex-1 py-12 bg-[#FDFBF8]">
+        <div class="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 space-y-8">
+            
+            <!-- Karigar Login Screen -->
+            <div id="karigarLoginSection" class="max-w-md mx-auto">
+                <div class="bg-white border border-amber-200/90 rounded-3xl p-8 shadow-xl text-center">
+                    <div class="w-16 h-16 rounded-2xl bg-amber-100 text-amber-800 text-3xl font-extrabold flex items-center justify-center mx-auto mb-4 shadow-sm">
+                        🪡
+                    </div>
+                    <h2 class="text-2xl font-bold text-slate-900 font-serif-luxury">KARIGAR PORTAL</h2>
+                    <p class="text-xs text-slate-500 mt-1 mb-6">Bilal Decor Studio • Apna Roznamcha, Kaam aur Adaigi Ka Hisaab Dekhein</p>
+
+                    <div id="karigarLoginError" class="hidden mb-4 p-3 bg-red-50 border border-red-200 text-red-700 rounded-xl text-xs font-bold text-left"></div>
+
+                    <form onsubmit="KarigarApp.submitWorkerLogin(event)" class="space-y-4 text-left">
+                        <div>
+                            <label class="block text-xs font-bold text-slate-700 mb-1">Karigar Username ya Phone Number</label>
+                            <input type="text" id="karigarLoginUsername" placeholder="e.g. rashid ya 0302-5544332" class="w-full bg-slate-50 border border-slate-300 text-slate-900 rounded-xl px-4 py-3 text-sm focus:border-amber-600 focus:outline-none" required>
+                        </div>
+                        <div>
+                            <label class="block text-xs font-bold text-slate-700 mb-1">Aap Ka Password</label>
+                            <input type="password" id="karigarLoginPassword" placeholder="Password darj karein" class="w-full bg-slate-50 border border-slate-300 text-slate-900 rounded-xl px-4 py-3 text-sm focus:border-amber-600 focus:outline-none" required>
+                        </div>
+                        <button type="submit" class="w-full py-3.5 bg-[#0F172A] hover:bg-slate-800 text-amber-300 font-bold rounded-xl shadow-lg transition flex items-center justify-center space-x-2 text-sm">
+                            <span>🔐 Login Karein</span>
+                        </button>
+                    </form>
+
+                    <div class="mt-6 pt-6 border-t border-slate-100 text-xs text-slate-500 text-center">
+                        Demo Login: Username: <code class="font-bold text-amber-800">rashid</code> | Password: <code class="font-bold text-amber-800">rashid123</code>
+                        <div class="mt-2 text-slate-400">
+                            Agar password bhool gaye hain to Admin se rabta karein.
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Karigar Dashboard (Rendered when authenticated) -->
+            <div id="karigarDashboardSection" class="hidden space-y-6">
+                <!-- Welcome Banner -->
+                <div class="flex flex-col md:flex-row md:items-center justify-between gap-4 bg-[#0F172A] text-white p-6 rounded-3xl shadow-lg border border-amber-500/20">
+                    <div class="flex items-center space-x-4">
+                        <div class="w-14 h-14 rounded-2xl bg-amber-400 text-slate-950 font-black text-2xl flex items-center justify-center shadow-md">
+                            🪡
+                        </div>
+                        <div>
+                            <div class="flex items-center space-x-2">
+                                <span class="text-xs font-extrabold uppercase tracking-wider text-amber-400">Khush-Amdeed</span>
+                                <span id="workerDisplayCraft" class="px-2 py-0.5 rounded-full text-[10px] font-bold bg-slate-800 text-slate-300">Ceiling Master</span>
+                            </div>
+                            <h1 id="workerDisplayName" class="text-2xl md:text-3xl font-bold font-serif-luxury text-amber-100 mt-0.5">Ustad Rashid</h1>
+                            <p class="text-xs text-slate-400 font-mono mt-0.5">Phone: <span id="workerDisplayPhone">0302-5544332</span> • Standard Rate: <span id="workerDisplayRate" class="text-amber-300 font-bold">Rs. 12 / sq ft</span></p>
+                        </div>
+                    </div>
+
+                    <div class="flex flex-wrap items-center gap-2">
+                        <button type="button" onclick="KarigarApp.printWorkerStatement()" class="px-4 py-2.5 bg-amber-500 hover:bg-amber-600 text-slate-950 font-extrabold text-xs rounded-xl shadow transition flex items-center space-x-1.5">
+                            <span>🖨 Khata Parchi Print</span>
+                        </button>
+                        <button type="button" onclick="KarigarApp.openWorkerPasswordModal()" class="px-3.5 py-2.5 bg-slate-800 hover:bg-slate-700 text-slate-200 text-xs font-bold rounded-xl transition">
+                            🔑 Password Badlein
+                        </button>
+                        <button type="button" onclick="KarigarApp.workerLogout()" class="px-3.5 py-2.5 bg-red-900/60 hover:bg-red-900 text-red-200 border border-red-700/50 text-xs font-bold rounded-xl transition">
+                            Logout 🚪
+                        </button>
+                    </div>
+                </div>
+
+                <!-- 4 KPI Cards -->
+                <div class="grid grid-cols-2 lg:grid-cols-4 gap-4">
+                    <div class="bg-white p-5 rounded-2xl border border-slate-200 shadow-sm">
+                        <span class="text-[11px] font-bold text-slate-500 uppercase tracking-wider">Kul Kaam Ki Rakam</span>
+                        <p id="workerStatTotalWork" class="text-2xl font-black text-slate-900 mt-1 font-mono">Rs. 0</p>
+                        <p class="text-[10px] text-slate-400 mt-0.5">Aap ki kul kamai</p>
+                    </div>
+                    <div class="bg-white p-5 rounded-2xl border border-slate-200 shadow-sm">
+                        <span class="text-[11px] font-bold text-slate-500 uppercase tracking-wider">Kul Wasool Shuda (Paid)</span>
+                        <p id="workerStatTotalPaid" class="text-2xl font-black text-emerald-700 mt-1 font-mono">Rs. 0</p>
+                        <p class="text-[10px] text-slate-400 mt-0.5">Jo paise aap ko mil chuke</p>
+                    </div>
+                    <div class="bg-white p-5 rounded-2xl border border-slate-200 shadow-sm">
+                        <span class="text-[11px] font-bold text-slate-500 uppercase tracking-wider">Baqi Lena (Balance)</span>
+                        <p id="workerStatBalanceDue" class="text-2xl font-black text-rose-600 mt-1 font-mono">Rs. 0</p>
+                        <p class="text-[10px] text-slate-400 mt-0.5">Studio se jo lene baqi hain</p>
+                    </div>
+                    <div class="bg-white p-5 rounded-2xl border border-slate-200 shadow-sm">
+                        <span class="text-[11px] font-bold text-slate-500 uppercase tracking-wider">Kul Chadrein / Sets</span>
+                        <p id="workerStatTotalItems" class="text-2xl font-black text-amber-800 mt-1 font-mono">0</p>
+                        <p class="text-[10px] text-slate-400 mt-0.5">Completed pieces</p>
+                    </div>
+                </div>
+
+                <!-- Tabs: Work History vs Payment History -->
+                <div class="bg-white rounded-3xl border border-slate-200 overflow-hidden shadow-sm">
+                    <div class="flex border-b border-slate-200 bg-slate-50">
+                        <button type="button" onclick="KarigarApp.switchWorkerTab('work')" id="workerTabBtnWork" class="px-5 py-3.5 text-xs md:text-sm font-extrabold bg-[#0F172A] text-amber-300">
+                            🛠️ Roznamcha (Kaam Ka Record)
+                        </button>
+                        <button type="button" onclick="KarigarApp.switchWorkerTab('payments')" id="workerTabBtnPayments" class="px-5 py-3.5 text-xs md:text-sm font-bold text-slate-600 hover:text-slate-900 bg-white border-x border-slate-200">
+                            💵 Wasooli Record (Payments Milin)
+                        </button>
+                    </div>
+
+                    <!-- Tab 1: Work Table -->
+                    <div id="workerTabWork" class="worker-tab-content p-6">
+                        <div class="overflow-x-auto rounded-2xl border border-slate-200">
+                            <table class="w-full text-left border-collapse">
+                                <thead class="bg-[#FAF7F0] border-b border-amber-200 text-[11px] uppercase tracking-wider text-slate-700 font-extrabold">
+                                    <tr>
+                                        <th class="py-3 px-3">Tareekh</th>
+                                        <th class="py-3 px-3">Chadar / Ceiling Items &amp; Size</th>
+                                        <th class="py-3 px-3">Total SqFt</th>
+                                        <th class="py-3 px-3 text-right">Rakam (PKR)</th>
+                                    </tr>
+                                </thead>
+                                <tbody id="workerWorkTableBody">
+                                    <!-- Populated dynamically -->
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+
+                    <!-- Tab 2: Payments Table -->
+                    <div id="workerTabPayments" class="worker-tab-content hidden p-6">
+                        <div class="overflow-x-auto rounded-2xl border border-slate-200">
+                            <table class="w-full text-left border-collapse">
+                                <thead class="bg-[#FAF7F0] border-b border-amber-200 text-[11px] uppercase tracking-wider text-slate-700 font-extrabold">
+                                    <tr>
+                                        <th class="py-3 px-3">Tareekh</th>
+                                        <th class="py-3 px-3">Rakam (Wasool Shuda)</th>
+                                        <th class="py-3 px-3">Tareeqa (Payment Method)</th>
+                                        <th class="py-3 px-3">Tafseel / Note</th>
+                                    </tr>
+                                </thead>
+                                <tbody id="workerPaymentsTableBody">
+                                    <!-- Populated dynamically -->
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+
+        </div>
+    </main>
+
+    <!-- ================================================= -->
+    <!-- KARIGAR MODAL 1: ADD / EDIT KARIGAR PROFILE -->
+    <!-- ================================================= -->
+    <div id="karigarProfileModal" class="hidden fixed inset-0 z-50 overflow-y-auto bg-black/60 backdrop-blur-sm p-4 flex items-center justify-center">
+        <div class="bg-white border border-amber-300 rounded-3xl max-w-lg w-full p-6 sm:p-8 relative shadow-2xl">
+            <button type="button" onclick="KarigarApp.closeKarigarProfileModal()" class="absolute top-5 right-5 w-9 h-9 rounded-full bg-slate-100 hover:bg-slate-200 text-slate-700 flex items-center justify-center text-sm transition">
+                ✕
+            </button>
+            <div class="flex items-center space-x-2 mb-4">
+                <span class="text-2xl">👤</span>
+                <h3 id="karigarModalTitle" class="text-xl font-bold text-slate-900 font-serif-luxury">Naya Karigar Shamil Karein</h3>
+            </div>
+            
+            <form onsubmit="KarigarApp.submitKarigarProfile(event)" class="space-y-4">
+                <input type="hidden" id="karigarFormId">
+                <div>
+                    <label class="block text-xs font-bold text-slate-700 mb-1">Karigar Ka Pura Naam</label>
+                    <input type="text" id="karigarFormName" placeholder="e.g. Ustad Rashid Ahmed" class="w-full bg-slate-50 border border-slate-300 rounded-xl px-4 py-2.5 text-xs text-slate-900 focus:border-amber-600 focus:outline-none" required>
+                </div>
+                <div class="grid grid-cols-2 gap-3">
+                    <div>
+                        <label class="block text-xs font-bold text-slate-700 mb-1">Phone / WhatsApp</label>
+                        <input type="text" id="karigarFormPhone" placeholder="0300-1234567" class="w-full bg-slate-50 border border-slate-300 rounded-xl px-4 py-2.5 text-xs text-slate-900 focus:border-amber-600 focus:outline-none">
+                    </div>
+                    <div>
+                        <label class="block text-xs font-bold text-slate-700 mb-1">Hunar / Craft</label>
+                        <input type="text" id="karigarFormCraft" placeholder="e.g. Ceiling Maker / Master" class="w-full bg-slate-50 border border-slate-300 rounded-xl px-4 py-2.5 text-xs text-slate-900 focus:border-amber-600 focus:outline-none">
+                    </div>
+                </div>
+                <div class="grid grid-cols-2 gap-3">
+                    <div>
+                        <label class="block text-xs font-bold text-slate-700 mb-1">Standard Rate (Rs/SqFt)</label>
+                        <input type="number" step="0.5" min="0" id="karigarFormRate" value="12" class="w-full bg-slate-50 border border-slate-300 rounded-xl px-4 py-2.5 text-xs font-mono font-bold text-amber-900 focus:border-amber-600 focus:outline-none" required>
+                        <span class="text-[10px] text-slate-400">By default: Rs. 12</span>
+                    </div>
+                    <div>
+                        <label class="block text-xs font-bold text-slate-700 mb-1">Account Status</label>
+                        <select id="karigarFormStatus" class="w-full bg-slate-50 border border-slate-300 rounded-xl px-4 py-2.5 text-xs text-slate-900 focus:border-amber-600 focus:outline-none">
+                            <option value="Active">Active (Kaam Chalu)</option>
+                            <option value="Inactive">Inactive (Chutti / Band)</option>
+                        </select>
+                    </div>
+                </div>
+                <div class="p-4 bg-amber-50/70 border border-amber-200/80 rounded-2xl space-y-3">
+                    <span class="text-xs font-bold text-amber-900 block">Worker Portal Login Details:</span>
+                    <div class="grid grid-cols-2 gap-3">
+                        <div>
+                            <label class="block text-[11px] font-bold text-slate-600 mb-1">Username</label>
+                            <input type="text" id="karigarFormUsername" placeholder="e.g. rashid" class="w-full bg-white border border-slate-300 rounded-lg px-3 py-2 text-xs text-slate-900 focus:border-amber-600 focus:outline-none">
+                        </div>
+                        <div>
+                            <label class="block text-[11px] font-bold text-slate-600 mb-1">Password</label>
+                            <input type="text" id="karigarFormPassword" placeholder="karigar123" class="w-full bg-white border border-slate-300 rounded-lg px-3 py-2 text-xs text-slate-900 focus:border-amber-600 focus:outline-none">
+                        </div>
+                    </div>
+                    <p id="karigarPasswordHelp" class="text-[10px] text-slate-500">Default password: karigar123</p>
+                </div>
+                <div>
+                    <label class="block text-xs font-bold text-slate-700 mb-1">Notes / Extra Info</label>
+                    <textarea id="karigarFormNotes" rows="2" placeholder="Karigar ke mutalliq koi khas note..." class="w-full bg-slate-50 border border-slate-300 rounded-xl px-4 py-2 text-xs text-slate-900 focus:border-amber-600 focus:outline-none"></textarea>
+                </div>
+                <div class="flex items-center justify-end space-x-2 pt-2">
+                    <button type="button" onclick="KarigarApp.closeKarigarProfileModal()" class="px-4 py-2.5 bg-slate-100 hover:bg-slate-200 text-slate-700 rounded-xl text-xs font-bold transition">
+                        Cancel
+                    </button>
+                    <button type="submit" class="px-5 py-2.5 bg-[#0F172A] hover:bg-slate-800 text-amber-300 rounded-xl text-xs font-bold transition shadow-md">
+                        Save Karigar
+                    </button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <!-- ================================================= -->
+    <!-- KARIGAR MODAL 2: DAILY WORK ENTRY (ROZNAMCHA) -->
+    <!-- Multi-Item Bill + Default 12 Rate + Custom Items + Optional Immediate Payment Deduction -->
+    <!-- ================================================= -->
+    <div id="karigarWorkEntryModal" class="hidden fixed inset-0 z-50 overflow-y-auto bg-black/60 backdrop-blur-sm p-4 flex items-center justify-center">
+        <div class="bg-white border border-amber-300 rounded-3xl max-w-3xl w-full max-h-[92vh] overflow-y-auto p-6 sm:p-8 relative shadow-2xl">
+            <button type="button" onclick="KarigarApp.closeWorkEntryModal()" class="absolute top-5 right-5 w-9 h-9 rounded-full bg-slate-100 hover:bg-slate-200 text-slate-700 flex items-center justify-center text-sm transition">
+                ✕
+            </button>
+            <div class="flex items-center space-x-2 mb-4">
+                <span class="text-2xl">🛠️</span>
+                <div>
+                    <h3 class="text-xl font-bold text-slate-900 font-serif-luxury">Roznamcha Kaam Darj Karein</h3>
+                    <p class="text-xs text-slate-500">Chadar/Ceiling size darj karein ya direct total amount dalein. Multiple items shamil ho sakte hain.</p>
+                </div>
+            </div>
+
+            <form onsubmit="KarigarApp.submitWorkEntry(event)" class="space-y-5">
+                <!-- Top Header: Karigar Select & Date -->
+                <div class="grid grid-cols-1 sm:grid-cols-2 gap-4 bg-amber-50/50 p-4 rounded-2xl border border-amber-200/60">
+                    <div>
+                        <label class="block text-xs font-bold text-slate-700 mb-1">Karigar Muntakhib Karein</label>
+                        <select id="workEntryKarigarSelect" onchange="KarigarApp.onWorkKarigarChange()" class="w-full bg-white border border-slate-300 rounded-xl px-3.5 py-2.5 text-xs text-slate-900 font-bold focus:border-amber-600 focus:outline-none" required>
+                            <!-- Populated dynamically -->
+                        </select>
+                    </div>
+                    <div>
+                        <label class="block text-xs font-bold text-slate-700 mb-1">Kaam Ki Tareekh (Date)</label>
+                        <input type="date" id="workEntryDate" class="w-full bg-white border border-slate-300 rounded-xl px-3.5 py-2.5 text-xs text-slate-900 font-mono font-bold focus:border-amber-600 focus:outline-none" required>
+                    </div>
+                </div>
+
+                <!-- Dynamic Line Items Container -->
+                <div class="space-y-3">
+                    <div class="flex items-center justify-between">
+                        <span class="text-xs font-black uppercase tracking-wider text-slate-700">Chadar / Ceiling Line Items</span>
+                        <button type="button" onclick="KarigarApp.addWorkItemRow()" class="px-3 py-1.5 bg-amber-100 hover:bg-amber-200 text-amber-900 rounded-lg text-xs font-extrabold transition flex items-center space-x-1 shadow-xs">
+                            <span>➕ Aur Item Shamil Karein</span>
+                        </button>
+                    </div>
+                    
+                    <div id="workItemsContainer" class="space-y-3">
+                        <!-- Dynamic rows inserted here -->
+                    </div>
+                </div>
+
+                <!-- Day Summary Box -->
+                <div class="p-4 bg-slate-900 text-white rounded-2xl flex flex-wrap items-center justify-between gap-4">
+                    <div>
+                        <span class="text-[10px] uppercase font-bold text-amber-400">Total Items:</span>
+                        <span id="workEntrySummaryItems" class="ml-1 text-sm font-bold font-mono">0</span>
+                        <span class="mx-2 text-slate-600">|</span>
+                        <span class="text-[10px] uppercase font-bold text-amber-400">Total SqFt:</span>
+                        <span id="workEntrySummarySqFt" class="ml-1 text-sm font-bold font-mono">0 sq ft</span>
+                    </div>
+                    <div class="text-right">
+                        <span class="text-xs text-slate-300 mr-2">Kul Kaam Ki Rakam:</span>
+                        <span id="workEntrySummaryGrandTotal" class="text-xl font-black text-amber-300 font-mono">Rs. 0</span>
+                    </div>
+                </div>
+
+                <!-- Optional Payment Deduction (Paisa Diya) Field -->
+                <div class="p-4 bg-emerald-50/70 border border-emerald-200 rounded-2xl space-y-3">
+                    <div class="flex items-center space-x-2">
+                        <span class="text-base">💵</span>
+                        <span class="text-xs font-extrabold text-emerald-900">Kya aaj karigar ko koi payment / kharcha diya? (Optional)</span>
+                    </div>
+                    <p class="text-[11px] text-slate-600">
+                        Agar aap ne aaj karigar ko koi raqam di hai to yahan darj karein, yeh foran is bill se deduct ho kar khata update kar degi.
+                    </p>
+                    <div class="grid grid-cols-1 sm:grid-cols-3 gap-3">
+                        <div>
+                            <label class="block text-[11px] font-bold text-slate-700 mb-1">Di Gai Rakam (PKR)</label>
+                            <input type="number" min="0" id="workDeductionAmount" oninput="KarigarApp.updateWorkEntryTotals()" placeholder="e.g. 5000" class="w-full bg-white border border-slate-300 rounded-lg px-3 py-2 text-xs font-mono font-bold text-rose-700 focus:border-amber-600 focus:outline-none">
+                        </div>
+                        <div>
+                            <label class="block text-[11px] font-bold text-slate-700 mb-1">Payment Method</label>
+                            <select id="workDeductionMethod" class="w-full bg-white border border-slate-300 rounded-lg px-3 py-2 text-xs text-slate-900 focus:border-amber-600 focus:outline-none">
+                                <option value="Cash">Cash (Naqad)</option>
+                                <option value="JazzCash">JazzCash</option>
+                                <option value="Easypaisa">Easypaisa</option>
+                                <option value="Bank Transfer">Bank Transfer</option>
+                            </select>
+                        </div>
+                        <div>
+                            <label class="block text-[11px] font-bold text-slate-700 mb-1">Details / Note</label>
+                            <input type="text" id="workDeductionNotes" value="Roznamcha bill adaigi" class="w-full bg-white border border-slate-300 rounded-lg px-3 py-2 text-xs text-slate-900 focus:border-amber-600 focus:outline-none">
+                        </div>
+                    </div>
+                    <div class="pt-2 border-t border-emerald-200/80 flex items-center justify-between text-xs">
+                        <span class="text-slate-600 font-bold">Deduction ke baad Baqi Rakam:</span>
+                        <span id="workEntryNetRemaining" class="text-sm font-black text-emerald-800 font-mono">Rs. 0</span>
+                    </div>
+                </div>
+
+                <div>
+                    <label class="block text-xs font-bold text-slate-700 mb-1">Order / Event Note (Optional)</label>
+                    <input type="text" id="workEntryNotes" placeholder="e.g. Crown Marquee hall ceiling aur stage order ka kaam" class="w-full bg-slate-50 border border-slate-300 rounded-xl px-4 py-2.5 text-xs text-slate-900 focus:border-amber-600 focus:outline-none">
+                </div>
+
+                <div class="flex items-center justify-end space-x-2 pt-2">
+                    <button type="button" onclick="KarigarApp.closeWorkEntryModal()" class="px-4 py-2.5 bg-slate-100 hover:bg-slate-200 text-slate-700 rounded-xl text-xs font-bold transition">
+                        Cancel
+                    </button>
+                    <button type="submit" class="px-6 py-2.5 bg-emerald-600 hover:bg-emerald-700 text-white rounded-xl text-xs font-bold transition shadow-md flex items-center space-x-1.5">
+                        <span>Done &amp; Save Roznamcha</span>
+                    </button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <!-- ================================================= -->
+    <!-- KARIGAR MODAL 3: RECORD PAYMENT (PAISA ADAIGI) -->
+    <!-- ================================================= -->
+    <div id="karigarPaymentModal" class="hidden fixed inset-0 z-50 overflow-y-auto bg-black/60 backdrop-blur-sm p-4 flex items-center justify-center">
+        <div class="bg-white border border-amber-300 rounded-3xl max-w-md w-full p-6 sm:p-8 relative shadow-2xl">
+            <button type="button" onclick="KarigarApp.closePaymentModal()" class="absolute top-5 right-5 w-9 h-9 rounded-full bg-slate-100 hover:bg-slate-200 text-slate-700 flex items-center justify-center text-sm transition">
+                ✕
+            </button>
+            <div class="flex items-center space-x-2 mb-4">
+                <span class="text-2xl">💵</span>
+                <div>
+                    <h3 class="text-xl font-bold text-slate-900 font-serif-luxury">Karigar Ko Paisa Dain</h3>
+                    <p class="text-xs text-slate-500">Adaigi direct karigar ke kul bil me se deduct ho kar baqi reh jaye gi.</p>
+                </div>
+            </div>
+
+            <form onsubmit="KarigarApp.submitPayment(event)" class="space-y-4">
+                <div>
+                    <label class="block text-xs font-bold text-slate-700 mb-1">Karigar Muntakhib Karein</label>
+                    <select id="paymentKarigarSelect" class="w-full bg-slate-50 border border-slate-300 rounded-xl px-4 py-2.5 text-xs text-slate-900 font-bold focus:border-amber-600 focus:outline-none" required>
+                        <!-- Populated dynamically -->
+                    </select>
+                </div>
+                <div class="grid grid-cols-2 gap-3">
+                    <div>
+                        <label class="block text-xs font-bold text-slate-700 mb-1">Adaigi Tareekh</label>
+                        <input type="date" id="paymentDate" class="w-full bg-slate-50 border border-slate-300 rounded-xl px-4 py-2.5 text-xs text-slate-900 font-mono font-bold focus:border-amber-600 focus:outline-none" required>
+                    </div>
+                    <div>
+                        <label class="block text-xs font-bold text-slate-700 mb-1">Ada Shuda Rakam (PKR)</label>
+                        <input type="number" min="1" step="1" id="paymentAmount" placeholder="e.g. 10000" class="w-full bg-slate-50 border border-slate-300 rounded-xl px-4 py-2.5 text-xs font-mono font-black text-rose-700 focus:border-amber-600 focus:outline-none" required>
+                    </div>
+                </div>
+                <div>
+                    <label class="block text-xs font-bold text-slate-700 mb-1">Tareeqa-e-Adaigi (Payment Method)</label>
+                    <select id="paymentMethod" class="w-full bg-slate-50 border border-slate-300 rounded-xl px-4 py-2.5 text-xs text-slate-900 focus:border-amber-600 focus:outline-none">
+                        <option value="Cash">Cash (Naqad)</option>
+                        <option value="JazzCash">JazzCash Transfer</option>
+                        <option value="Easypaisa">Easypaisa Transfer</option>
+                        <option value="Bank Transfer">Bank Transfer / Online</option>
+                    </select>
+                </div>
+                <div>
+                    <label class="block text-xs font-bold text-slate-700 mb-1">Tafseel / Note</label>
+                    <input type="text" id="paymentNotes" placeholder="e.g. Hafta kharcha, advance, ya bill final payment" class="w-full bg-slate-50 border border-slate-300 rounded-xl px-4 py-2.5 text-xs text-slate-900 focus:border-amber-600 focus:outline-none">
+                </div>
+
+                <div class="flex items-center justify-end space-x-2 pt-2">
+                    <button type="button" onclick="KarigarApp.closePaymentModal()" class="px-4 py-2.5 bg-slate-100 hover:bg-slate-200 text-slate-700 rounded-xl text-xs font-bold transition">
+                        Cancel
+                    </button>
+                    <button type="submit" class="px-6 py-2.5 bg-amber-600 hover:bg-amber-700 text-white rounded-xl text-xs font-bold transition shadow-md">
+                        Done (Paisa Deduct Karein)
+                    </button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <!-- ================================================= -->
+    <!-- KARIGAR MODAL 4: FULL LEDGER STATEMENT & PRINT -->
+    <!-- ================================================= -->
+    <div id="karigarLedgerModal" class="hidden fixed inset-0 z-50 overflow-y-auto bg-black/60 backdrop-blur-sm p-4 flex items-center justify-center">
+        <div class="bg-white border border-amber-300 rounded-3xl max-w-4xl w-full max-h-[94vh] overflow-y-auto p-6 sm:p-8 relative shadow-2xl">
+            <button type="button" onclick="KarigarApp.closeLedgerModal()" class="absolute top-5 right-5 w-9 h-9 rounded-full bg-slate-100 hover:bg-slate-200 text-slate-700 flex items-center justify-center text-sm transition no-print">
+                ✕
+            </button>
+            <div id="karigarLedgerContent">
+                <!-- Rendered dynamically by KarigarApp.renderLedgerStatement() -->
+            </div>
+        </div>
+    </div>
+
+    <!-- ================================================= -->
+    <!-- KARIGAR MODAL 5: WORKER CHANGE PASSWORD -->
+    <!-- ================================================= -->
+    <div id="workerPasswordModal" class="hidden fixed inset-0 z-50 overflow-y-auto bg-black/60 backdrop-blur-sm p-4 flex items-center justify-center">
+        <div class="bg-white border border-amber-300 rounded-3xl max-w-sm w-full p-6 relative shadow-2xl">
+            <button type="button" onclick="KarigarApp.closeWorkerPasswordModal()" class="absolute top-4 right-4 w-8 h-8 rounded-full bg-slate-100 hover:bg-slate-200 text-slate-700 flex items-center justify-center text-xs transition">
+                ✕
+            </button>
+            <h3 class="text-lg font-bold text-slate-900 font-serif-luxury mb-4">Password Tabdeel Karein</h3>
+            <form onsubmit="KarigarApp.submitWorkerPasswordChange(event)" class="space-y-3">
+                <div>
+                    <label class="block text-xs font-bold text-slate-700 mb-1">Purana Password</label>
+                    <input type="password" id="workerOldPassword" class="w-full bg-slate-50 border border-slate-300 rounded-xl px-3 py-2 text-xs focus:border-amber-600 focus:outline-none" required>
+                </div>
+                <div>
+                    <label class="block text-xs font-bold text-slate-700 mb-1">Naya Password</label>
+                    <input type="password" id="workerNewPassword" class="w-full bg-slate-50 border border-slate-300 rounded-xl px-3 py-2 text-xs focus:border-amber-600 focus:outline-none" minlength="4" required>
+                </div>
+                <div class="flex justify-end space-x-2 pt-2">
+                    <button type="button" onclick="KarigarApp.closeWorkerPasswordModal()" class="px-3 py-2 bg-slate-100 text-slate-700 rounded-xl text-xs font-bold">
+                        Cancel
+                    </button>
+                    <button type="submit" class="px-4 py-2 bg-[#0F172A] text-amber-300 rounded-xl text-xs font-bold">
+                        Password Update Karein
+                    </button>
+                </div>
+            </form>
+        </div>
+    </div>
 
     <!-- ================================================= -->
     <!-- MODAL 1: PRODUCT DETAIL & DYNAMIC CALCULATOR -->
@@ -1995,6 +2529,7 @@
     <script src="assets/js/database.js?v=2.5"></script>
     <script src="assets/js/analytics.js?v=2.5"></script>
     <script src="assets/js/admin.js?v=2.5"></script>
+    <script src="assets/js/karigar.js?v=2.6"></script>
     <script src="assets/js/app.js?v=2.5"></script>
 
     <!-- Additional Standalone Calculator Page Helpers -->
@@ -2173,6 +2708,7 @@ Barahe meharbani delivery details tasdeeq kar dein.`;
                 creator: 'adminTabBtnCreator',
                 products: 'adminTabBtnProducts',
                 database: 'adminTabBtnDatabase',
+                karigars: 'adminTabBtnKarigars',
                 settings: 'adminTabBtnSettings'
             };
 
@@ -2194,6 +2730,10 @@ Barahe meharbani delivery details tasdeeq kar dein.`;
             if (tabName === 'database' && window.CustomerDB) {
                 CustomerDB.renderAdminCustomerTable();
                 CustomerDB.renderDatabaseStats();
+            }
+
+            if (tabName === 'karigars' && window.KarigarApp) {
+                KarigarApp.loadAdminKarigars();
             }
         };
     </script>
