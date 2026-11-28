@@ -1,6 +1,6 @@
 /**
  * Bilal Decor Studio - Ultra-Professional B2B PDF Invoice & Bill Generation Engine
- * Standard A4 Luxury Layout, Pixel-Perfect PDF Export (html2pdf.js) & Browser Print
+ * Standard A4 Luxury Layout, Pixel-Perfect Direct DOM PDF Export (html2pdf.js) & Browser Print
  */
 
 const Invoice = {
@@ -28,13 +28,13 @@ const Invoice = {
             return;
         }
 
-        // Format dates cleanly
+        // Format date
         let formattedDate = order.createdAt || new Date().toISOString().slice(0, 10);
         if (formattedDate.includes('T')) {
             formattedDate = formattedDate.split('T')[0];
         }
 
-        // Calculate totals safely
+        // Safely parse numbers
         const subtotal = Number(order.totalAmount) || 0;
         const advancePaid = Number(order.advancePaid) || 0;
         const remainingBalance = order.remainingBalance !== undefined 
@@ -178,7 +178,7 @@ const Invoice = {
         if (!modal || !content) return;
 
         this.currentData = data;
-        const settings = Store.getSettings ? Store.getSettings() : {
+        const settings = (window.Store && Store.getSettings) ? Store.getSettings() : {
             phoneDisplay: "0300-1234567",
             whatsappNumber: "923001234567",
             bank: {
@@ -200,31 +200,35 @@ const Invoice = {
         };
 
         content.innerHTML = `
-            <div id="invoiceDocument" class="bg-white text-slate-900 border border-slate-200 rounded-xl max-w-3xl mx-auto shadow-sm p-6 sm:p-8" style="box-sizing: border-box; width: 100%;">
+            <div id="invoiceDocument" class="bg-white text-slate-900 border border-slate-200 rounded-xl mx-auto shadow-sm" style="box-sizing: border-box; width: 100%; max-width: 820px; padding: 24px 28px; background: #ffffff;">
                 
                 <!-- TOP HEADER BAR -->
-                <div class="flex flex-col sm:flex-row justify-between items-start sm:items-center pb-5 border-b-2 border-amber-600 gap-4">
-                    <div>
-                        <div class="flex items-center space-x-3 mb-1">
-                            <img src="assets/images/logo.svg" alt="Bilal Decor Studio" style="height: 46px; width: auto;" onerror="this.style.display='none'">
-                            <div>
-                                <h1 class="text-xl font-extrabold text-slate-900 tracking-wide font-serif-luxury" style="letter-spacing: 1.5px;">BILAL DECOR STUDIO</h1>
-                                <p class="text-[11px] text-amber-800 font-bold tracking-wider uppercase">B2B Marquee Ceilings & Stage Drapery Manufacturer</p>
-                            </div>
+                <div class="flex flex-col sm:flex-row justify-between items-start sm:items-center pb-4 border-b-2 border-amber-600 gap-3" style="border-bottom: 2px solid #D97706;">
+                    <div class="flex items-center space-x-3">
+                        <!-- Inline SVG Monogram (Guarantees 100% Reliable Rendering & Zero Canvas Tainting) -->
+                        <div style="width: 46px; height: 46px; min-width: 46px; border-radius: 12px; background: #0F172A; display: flex; align-items: center; justify-content: center; box-shadow: 0 2px 4px rgba(0,0,0,0.12);">
+                            <svg viewBox="0 0 80 80" width="46" height="46">
+                                <circle cx="40" cy="40" r="34" fill="none" stroke="#D4AF37" stroke-width="2.5" />
+                                <circle cx="40" cy="40" r="30" fill="none" stroke="#D4AF37" stroke-width="0.8" opacity="0.4" />
+                                <path d="M 21,33 Q 40,44 59,33" fill="none" stroke="#D4AF37" stroke-width="2.5" stroke-linecap="round" />
+                                <path d="M 33,26 L 33,54 M 33,26 L 43,26 C 47.5,26 50,28.5 50,32 C 50,35.5 47.5,38 43,38 L 33,38 M 33,38 L 45,38 C 49.5,38 52.5,41 52.5,46 C 52.5,51 49.5,54 45,54 L 33,54" fill="none" stroke="#D4AF37" stroke-width="2.8" stroke-linecap="round" stroke-linejoin="round" />
+                            </svg>
                         </div>
-                        <p class="text-xs text-slate-600 mt-1">
-                            📍 Lahore & Gujranwala Workshop Hub &nbsp;|&nbsp; 📞 ${settings.phoneDisplay || '0300-1234567'} &nbsp;|&nbsp; 💬 WhatsApp Rabta
-                        </p>
+                        <div>
+                            <h1 class="text-xl font-extrabold text-slate-900 tracking-wide font-serif-luxury" style="letter-spacing: 1px; margin: 0; line-height: 1.2;">BILAL DECOR STUDIO</h1>
+                            <p class="text-[11px] text-amber-800 font-bold uppercase tracking-wider" style="margin: 2px 0 0 0;">B2B Marquee Ceilings & Stage Drapery Manufacturer</p>
+                            <p class="text-[10.5px] text-slate-500" style="margin: 2px 0 0 0;">📍 Lahore & Gujranwala Workshop Hub &nbsp;|&nbsp; 📞 ${settings.phoneDisplay || '0300-1234567'} &nbsp;|&nbsp; 💬 WhatsApp</p>
+                        </div>
                     </div>
 
-                    <div class="text-left sm:text-right w-full sm:w-auto bg-[#FAF8F5] p-3 rounded-xl border border-amber-200/80">
-                        <span class="inline-block px-2.5 py-0.5 rounded-full bg-amber-100 text-amber-900 font-extrabold text-[10px] tracking-wider uppercase mb-1">
+                    <div class="text-left sm:text-right w-full sm:w-auto p-2.5 rounded-lg border border-amber-200" style="background: #FAF8F5;">
+                        <span class="inline-block px-2 py-0.5 rounded bg-amber-100 text-amber-900 font-extrabold text-[9.5px] tracking-wider uppercase mb-1">
                             OFFICIAL B2B ESTIMATE BILL
                         </span>
-                        <h3 class="text-lg font-black font-mono text-slate-900 leading-tight">${data.invoiceNo}</h3>
-                        <p class="text-xs text-slate-600 mt-0.5">Date: <strong class="text-slate-900">${data.date}</strong></p>
+                        <h3 class="text-base font-black font-mono text-slate-900 leading-tight" style="margin: 0;">${data.invoiceNo}</h3>
+                        <p class="text-[11px] text-slate-600 mt-0.5">Date: <strong class="text-slate-900">${data.date}</strong></p>
                         <div class="mt-1">
-                            <span class="inline-block px-2 py-0.5 rounded text-[11px] font-bold ${
+                            <span class="inline-block px-2 py-0.5 rounded text-[10.5px] font-bold ${
                                 data.status === 'delivered' ? 'bg-emerald-100 text-emerald-800' :
                                 data.status === 'dispatched' ? 'bg-blue-100 text-blue-800' :
                                 data.status === 'verified' || data.status === 'cutting' || data.status === 'stitching' ? 'bg-amber-100 text-amber-900' :
@@ -236,10 +240,10 @@ const Invoice = {
                     </div>
                 </div>
 
-                <!-- CLIENT & CARGO DISPATCH DETAILS (2-Column Card) -->
-                <div class="grid grid-cols-1 sm:grid-cols-2 gap-4 my-5 text-xs bg-[#FAF8F5] p-4 rounded-xl border border-slate-200">
+                <!-- CLIENT & CARGO DISPATCH DETAILS (2-Column Grid) -->
+                <div class="grid grid-cols-1 sm:grid-cols-2 gap-3 my-4 text-xs p-3.5 rounded-xl border border-slate-200" style="background: #FAF8F5;">
                     <div>
-                        <span class="text-amber-800 font-extrabold uppercase tracking-wider block text-[10px] mb-1.5">
+                        <span class="text-amber-800 font-extrabold uppercase tracking-wider block text-[10px] mb-1">
                             👤 Customer & Marquee Details:
                         </span>
                         <p class="text-sm font-bold text-slate-900 mb-0.5">${data.clientName}</p>
@@ -248,49 +252,51 @@ const Invoice = {
                         <p class="text-slate-600">📍 Shehar / City: <strong class="text-slate-900 font-bold">${data.city}</strong></p>
                     </div>
 
-                    <div class="sm:text-right border-t sm:border-t-0 sm:border-l border-amber-200/60 pt-3 sm:pt-0 sm:pl-4">
-                        <span class="text-amber-800 font-extrabold uppercase tracking-wider block text-[10px] mb-1.5">
+                    <div class="sm:text-right border-t sm:border-t-0 sm:border-l border-amber-200/60 pt-2.5 sm:pt-0 sm:pl-3">
+                        <span class="text-amber-800 font-extrabold uppercase tracking-wider block text-[10px] mb-1">
                             🚚 Delivery & Cargo Logistics:
                         </span>
                         <p class="text-slate-700">Cargo Adda: <strong class="text-slate-900 font-bold">${data.cargoDetails}</strong></p>
-                        <p class="text-emerald-800 font-bold mt-1">📦 Dispatch Status: <strong>${data.expectedDispatch || '5 se 6 working days'}</strong></p>
-                        <p class="text-slate-500 mt-1">Payment Policy: 50% Advance • 50% on Cargo Delivery</p>
+                        <p class="text-emerald-800 font-bold mt-0.5">📦 Dispatch Status: <strong>${data.expectedDispatch || '5 se 6 working days'}</strong></p>
+                        <p class="text-slate-500 mt-0.5 text-[10px]">Payment Terms: Advance + Balance on Cargo Receipt</p>
                     </div>
                 </div>
 
-                <!-- ITEMS SPECIFICATION TABLE -->
-                <div class="overflow-x-auto mb-5 rounded-xl border border-slate-200 shadow-2xs">
-                    <table class="w-full text-left text-xs" style="border-collapse: collapse; min-width: 600px;">
-                        <thead class="bg-[#F5EEDB] border-b border-amber-300 text-slate-900 font-extrabold">
+                <!-- ITEM SPECIFICATION TABLE (Responsive & Self-Contained) -->
+                <div class="mb-4 rounded-xl border border-slate-200 overflow-hidden" style="border: 1px solid #E2E8F0;">
+                    <table class="w-full text-left text-xs" style="border-collapse: collapse; width: 100%; table-layout: auto;">
+                        <thead style="background: #F5EEDB; border-bottom: 2px solid #D4AF37;">
                             <tr>
-                                <th class="p-2.5 text-center w-8">#</th>
-                                <th class="p-2.5">Design & Fabric Description</th>
-                                <th class="p-2.5 text-center">Size (L x W)</th>
-                                <th class="p-2.5 text-center">Total Sq Ft</th>
-                                <th class="p-2.5 text-right">Rate/Sq Ft</th>
-                                <th class="p-2.5 text-center">Qty</th>
-                                <th class="p-2.5 text-right">Total (PKR)</th>
+                                <th style="padding: 8px 10px; width: 32px; text-align: center; color: #0F172A; font-weight: 800;">#</th>
+                                <th style="padding: 8px 10px; color: #0F172A; font-weight: 800;">Design & Fabric Description</th>
+                                <th style="padding: 8px 10px; text-align: right; color: #0F172A; font-weight: 800;">Rate / Sq Ft</th>
+                                <th style="padding: 8px 10px; text-align: center; width: 44px; color: #0F172A; font-weight: 800;">Qty</th>
+                                <th style="padding: 8px 10px; text-align: right; color: #0F172A; font-weight: 800;">Total (PKR)</th>
                             </tr>
                         </thead>
-                        <tbody class="divide-y divide-slate-100 bg-white">
+                        <tbody style="background: #ffffff;">
                             ${data.items.map((item, idx) => {
                                 const sizeStr = (item.length && item.length !== '-' && item.width && item.width !== '-')
                                     ? `${item.length} × ${item.width} ft`
-                                    : '-';
-                                const sqFtStr = item.sqFt ? Number(item.sqFt).toLocaleString() : '-';
+                                    : '';
+                                const sqFtStr = item.sqFt ? `${Number(item.sqFt).toLocaleString()} sq ft` : '';
+                                const metaParts = [];
+                                if (sizeStr) metaParts.push(`Size: ${sizeStr}`);
+                                if (sqFtStr) metaParts.push(`Area: ${sqFtStr}`);
+                                metaParts.push('Export Quality Double Stitching');
+                                const metaLine = metaParts.join(' &nbsp;•&nbsp; ');
+
                                 const rateStr = item.rate ? `Rs. ${Number(item.rate).toLocaleString()}` : '-';
                                 return `
-                                    <tr class="${idx % 2 === 1 ? 'bg-slate-50/60' : 'bg-white'}">
-                                        <td class="p-2.5 text-center font-mono font-bold text-slate-500">${idx + 1}</td>
-                                        <td class="p-2.5">
-                                            <p class="font-bold text-slate-900">${item.title}</p>
-                                            <p class="text-[10px] text-slate-500">Premium Export Quality Double Stitching</p>
+                                    <tr style="border-bottom: 1px solid #F1F5F9; background: ${idx % 2 === 1 ? '#FAFAF9' : '#FFFFFF'};">
+                                        <td style="padding: 8px 10px; text-align: center; font-family: monospace; font-weight: bold; color: #64748B;">${idx + 1}</td>
+                                        <td style="padding: 8px 10px;">
+                                            <p style="margin: 0; font-weight: bold; color: #0F172A; font-size: 12.5px;">${item.title}</p>
+                                            <p style="margin: 2px 0 0 0; font-size: 10px; color: #64748B;">${metaLine}</p>
                                         </td>
-                                        <td class="p-2.5 text-center font-mono text-slate-700 whitespace-nowrap">${sizeStr}</td>
-                                        <td class="p-2.5 text-center font-mono font-bold text-slate-900">${sqFtStr}</td>
-                                        <td class="p-2.5 text-right font-mono text-slate-700">${rateStr}</td>
-                                        <td class="p-2.5 text-center font-mono font-bold text-slate-900">${item.quantity || 1}</td>
-                                        <td class="p-2.5 text-right font-mono font-black text-slate-900">${formatPKR(item.total)}</td>
+                                        <td style="padding: 8px 10px; text-align: right; font-family: monospace; color: #334155;">${rateStr}</td>
+                                        <td style="padding: 8px 10px; text-align: center; font-family: monospace; font-weight: bold; color: #0F172A;">${item.quantity || 1}</td>
+                                        <td style="padding: 8px 10px; text-align: right; font-family: monospace; font-weight: 900; color: #0F172A; font-size: 13px;">${formatPKR(item.total)}</td>
                                     </tr>
                                 `;
                             }).join('')}
@@ -299,63 +305,63 @@ const Invoice = {
                 </div>
 
                 <!-- FINANCIAL CALCULATIONS & BANK ACCOUNTS -->
-                <div class="grid grid-cols-1 sm:grid-cols-2 gap-4 p-4 rounded-xl bg-[#FAF8F5] border border-amber-200 mb-5 text-xs">
+                <div class="grid grid-cols-1 sm:grid-cols-2 gap-3 p-3.5 rounded-xl border border-amber-200 mb-4 text-xs" style="background: #FAF8F5;">
                     <div class="space-y-1.5">
                         <span class="text-amber-900 font-extrabold uppercase tracking-wider block text-[10px] mb-1">
-                            🏦 Official Payment Verification Accounts:
+                            🏦 Official Payment Accounts:
                         </span>
-                        <div class="p-2 bg-white rounded-lg border border-slate-200 text-slate-700 space-y-0.5">
-                            <p class="font-bold text-slate-900">${settings.bank?.bankName || 'Meezan Bank Ltd'}</p>
-                            <p class="font-mono text-xs">A/C: <strong class="text-slate-900">${settings.bank?.accountNo || '0102-0108928371'}</strong></p>
-                            <p class="text-[10px] text-slate-500">Title: ${settings.bank?.title || 'Bilal Decor Studio'}</p>
+                        <div class="p-2 bg-white rounded-lg border border-slate-200 text-slate-700">
+                            <p class="font-bold text-slate-900 text-[11px]">${settings.bank?.bankName || 'Meezan Bank Ltd'}</p>
+                            <p class="font-mono text-[11px]">A/C: <strong class="text-slate-900">${settings.bank?.accountNo || '0102-0108928371'}</strong></p>
+                            <p class="text-[9.5px] text-slate-500">Title: ${settings.bank?.title || 'Bilal Decor Studio'}</p>
                         </div>
-                        <div class="p-2 bg-white rounded-lg border border-slate-200 text-slate-700 space-y-0.5">
-                            <p class="font-bold text-slate-900">JazzCash / EasyPaisa</p>
-                            <p class="font-mono text-xs">Number: <strong class="text-slate-900">${settings.jazzcash?.number || '0300-1234567'}</strong></p>
-                            <p class="text-[10px] text-slate-500">Title: ${settings.jazzcash?.title || 'Bilal Decor Studio'}</p>
+                        <div class="p-2 bg-white rounded-lg border border-slate-200 text-slate-700">
+                            <p class="font-bold text-slate-900 text-[11px]">JazzCash / EasyPaisa</p>
+                            <p class="font-mono text-[11px]">Number: <strong class="text-slate-900">${settings.jazzcash?.number || '0300-1234567'}</strong></p>
+                            <p class="text-[9.5px] text-slate-500">Title: ${settings.jazzcash?.title || 'Bilal Decor Studio'}</p>
                         </div>
                     </div>
 
-                    <div class="space-y-2 text-right flex flex-col justify-center">
+                    <div class="space-y-1.5 text-right flex flex-col justify-center">
                         <div class="flex justify-between text-slate-600 pb-1 border-b border-slate-200">
                             <span class="font-medium">Kul Rakam (Subtotal):</span>
-                            <span class="font-mono font-bold text-slate-900 text-sm">${formatPKR(data.subtotal)}</span>
+                            <span class="font-mono font-bold text-slate-900 text-xs">${formatPKR(data.subtotal)}</span>
                         </div>
                         <div class="flex justify-between text-emerald-800 pb-1 border-b border-slate-200">
                             <span class="font-medium">Ada Shuda Advance:</span>
-                            <span class="font-mono font-bold text-emerald-700 text-sm">${formatPKR(data.advancePaid)}</span>
+                            <span class="font-mono font-bold text-emerald-700 text-xs">${formatPKR(data.advancePaid)}</span>
                         </div>
-                        <div class="flex justify-between items-center text-sm font-black p-2.5 rounded-lg bg-[#0F172A] text-white">
-                            <span class="text-amber-300 font-bold">Baqaya Rakam (Due Balance):</span>
-                            <span class="font-mono text-amber-300 text-base font-black">${formatPKR(data.remainingBalance)}</span>
+                        <div class="flex justify-between items-center text-xs font-black p-2 rounded-lg bg-[#0F172A] text-white" style="background: #0F172A;">
+                            <span class="text-amber-300 font-bold text-[11px]">Baqaya Rakam (Due Balance):</span>
+                            <span class="font-mono text-amber-300 text-sm font-black">${formatPKR(data.remainingBalance)}</span>
                         </div>
                     </div>
                 </div>
 
                 <!-- FOOTER, GUARANTEE & OFFICIAL STAMP -->
-                <div class="flex flex-col sm:flex-row justify-between items-center pt-3 border-t border-slate-200 text-xs text-slate-600 gap-4">
-                    <div class="space-y-0.5 text-[11px] max-w-sm">
+                <div class="flex flex-col sm:flex-row justify-between items-center pt-2.5 border-t border-slate-200 text-xs text-slate-600 gap-3" style="border-top: 1px solid #E2E8F0;">
+                    <div class="space-y-0.5 text-[10px] max-w-sm">
                         <p class="font-bold text-slate-800">✅ Bilal Decor Studio Guarantee & Sharaait:</p>
-                        <p>1. Heavy-duty double stitching aur A-Grade velvet/silk fabric ki mukammal guarantee hai.</p>
-                        <p>2. Cargo Adda par parcel receive hone par baqaya payment lazmi clear karein.</p>
+                        <p>1. Heavy-duty double stitching aur A-Grade fabric ki 100% guarantee hai.</p>
+                        <p>2. Cargo Adda par parcel receive hone par baqaya raqam lazmi ada karein.</p>
                     </div>
 
                     <div class="text-center sm:text-right flex items-center space-x-3">
-                        <div class="inline-block p-2.5 rounded-xl border-2 border-dashed border-amber-600 text-amber-900 font-extrabold text-[9px] uppercase tracking-wider text-center bg-amber-50/50">
+                        <div class="inline-block p-2 rounded-xl border-2 border-dashed border-amber-600 text-amber-900 font-extrabold text-[8.5px] uppercase tracking-wider text-center bg-amber-50/60" style="border: 2px dashed #D97706;">
                             ★ BILAL DECOR STUDIO ★<br>
                             <span class="text-slate-900 font-black">OFFICIAL ATELIER SEAL</span><br>
                             PAKISTAN • VERIFIED
                         </div>
                         <div class="text-center">
-                            <div class="w-28 border-b border-slate-400 mb-1"></div>
-                            <p class="text-[10px] text-slate-500 font-semibold">Authorized Signature</p>
+                            <div class="w-24 border-b border-slate-400 mb-1" style="border-bottom: 1px solid #94A3B8;"></div>
+                            <p class="text-[9.5px] text-slate-500 font-semibold">Authorized Signatory</p>
                         </div>
                     </div>
                 </div>
 
                 <!-- FINE PRINT WATERMARK -->
-                <div class="text-center text-[9px] text-slate-400 pt-3 border-t border-slate-100 mt-3">
-                    Computer Generated B2B Invoice • Bilal Decor Studio (Marquee Ceilings & Stage Drapery Atelier) • bilaldecorstudio.com
+                <div class="text-center text-[9px] text-slate-400 pt-2 border-t border-slate-100 mt-2" style="border-top: 1px solid #F1F5F9;">
+                    Computer Generated B2B Official Invoice • Bilal Decor Studio (Marquee Ceilings & Stage Drapery Atelier) • bilaldecorstudio.com
                 </div>
             </div>
         `;
@@ -374,12 +380,15 @@ const Invoice = {
     },
 
     /**
-     * Download Invoice as a razor-sharp, perfectly dimensioned A4 PDF
-     * Resolves clipping, missing items, and excess space on mobile & desktop!
+     * Download Invoice as PDF directly from the visible document
+     * 100% reliable: captures actual rendered DOM element, no blank pages, perfect A4 formatting.
      */
     async downloadPDF() {
         const sourceElement = document.getElementById('invoiceDocument');
-        if (!sourceElement) return;
+        if (!sourceElement) {
+            alert("Invoice document nahi mila.");
+            return;
+        }
 
         const downloadBtn = document.querySelector('#invoiceModal button[onclick*="downloadPDF"]');
         const origBtnHtml = downloadBtn ? downloadBtn.innerHTML : '';
@@ -389,53 +398,26 @@ const Invoice = {
         }
 
         try {
-            // Guarantee exact 794px width (standard A4 at 96 DPI) using an off-screen clone
-            const printClone = sourceElement.cloneNode(true);
-            printClone.id = 'invoiceDocument_pdf_clone';
-            
-            // Apply standard print dimensions to ensure zero responsive squishing or table cutoffs
-            printClone.style.width = '794px';
-            printClone.style.maxWidth = '794px';
-            printClone.style.minWidth = '794px';
-            printClone.style.boxSizing = 'border-box';
-            printClone.style.position = 'fixed';
-            printClone.style.left = '-9999px';
-            printClone.style.top = '0';
-            printClone.style.zIndex = '-9999';
-            printClone.style.background = '#ffffff';
-            printClone.style.margin = '0';
-            printClone.style.padding = '24px 28px';
-            printClone.style.boxShadow = 'none';
-            printClone.style.borderRadius = '0';
-            printClone.style.overflow = 'visible';
-
-            // Ensure all inner scrollable containers are fully expanded in the PDF clone
-            printClone.querySelectorAll('*').forEach(el => {
-                if (el.classList.contains('overflow-x-auto') || el.style.overflow || el.style.overflowX) {
-                    el.style.overflow = 'visible';
-                    el.style.overflowX = 'visible';
-                }
-            });
-
-            document.body.appendChild(printClone);
+            // Reset modal scroll so html2canvas captures from top-left (0, 0)
+            const modal = document.getElementById('invoiceModal');
+            if (modal) modal.scrollTop = 0;
+            window.scrollTo(0, 0);
 
             if (window.html2pdf) {
                 const invoiceNo = (this.currentData && this.currentData.invoiceNo) 
                     ? this.currentData.invoiceNo.replace(/[^a-zA-Z0-9_-]/g, '_')
                     : 'Bilal_Decor_Invoice';
-                
+
                 const opt = {
-                    margin: [6, 8, 6, 8], // Balanced 6mm top/bottom, 8mm left/right
+                    margin: [6, 8, 6, 8], // 6mm top/bottom, 8mm left/right
                     filename: `Bilal_Decor_${invoiceNo}.pdf`,
                     image: { type: 'jpeg', quality: 0.98 },
                     html2canvas: {
-                        scale: 2, // 2x crisp vector-like text rendering
+                        scale: 2, // 2x high resolution
                         useCORS: true,
-                        letterRendering: true,
+                        logging: false,
                         scrollX: 0,
-                        scrollY: 0,
-                        width: 794,
-                        windowWidth: 794
+                        scrollY: 0
                     },
                     jsPDF: {
                         unit: 'mm',
@@ -445,14 +427,11 @@ const Invoice = {
                     pagebreak: { mode: ['avoid-all', 'css', 'legacy'] }
                 };
 
-                await html2pdf().set(opt).from(printClone).save();
+                // Capture directly from the real visible element!
+                await html2pdf().set(opt).from(sourceElement).save();
             } else {
+                // Fallback to browser print dialogue
                 window.print();
-            }
-
-            // Remove temporary clone from DOM
-            if (printClone && printClone.parentNode) {
-                printClone.parentNode.removeChild(printClone);
             }
         } catch (err) {
             console.error("PDF generation error:", err);
