@@ -1091,6 +1091,67 @@ Aap website par apna PIN laga kar live order track kar sakte hain.
         if (document.getElementById('settingAddress')) document.getElementById('settingAddress').value = settings.address || 'Chungi Amer Sidhu, Ferozepur Road, Lahore, Pakistan';
         if (document.getElementById('settingMapQuery')) document.getElementById('settingMapQuery').value = settings.mapQuery || settings.address || 'Chungi Amer Sidhu, Ferozepur Road, Lahore';
         if (document.getElementById('settingTimings')) document.getElementById('settingTimings').value = settings.timings || 'Mon - Sat: 9:00 AM - 9:00 PM';
+
+        const lat = settings.warehouseLat !== undefined ? settings.warehouseLat : 31.4550;
+        const lng = settings.warehouseLng !== undefined ? settings.warehouseLng : 74.3490;
+        if (document.getElementById('settingWarehouseLat')) document.getElementById('settingWarehouseLat').value = lat;
+        if (document.getElementById('settingWarehouseLng')) document.getElementById('settingWarehouseLng').value = lng;
+        this.updateAdminMapPreview(lat, lng);
+    },
+
+    onCoordsInputChanged() {
+        const latVal = parseFloat(document.getElementById('settingWarehouseLat')?.value);
+        const lngVal = parseFloat(document.getElementById('settingWarehouseLng')?.value);
+        if (!isNaN(latVal) && !isNaN(lngVal)) {
+            this.updateAdminMapPreview(latVal, lngVal);
+        }
+    },
+
+    updateAdminMapPreview(lat, lng) {
+        const iframe = document.getElementById('adminGoogleMapPreviewIframe');
+        const extLink = document.getElementById('adminGoogleMapExternalLink');
+        const validLat = typeof lat === 'number' && !isNaN(lat) ? lat : 31.4550;
+        const validLng = typeof lng === 'number' && !isNaN(lng) ? lng : 74.3490;
+        const mapUrl = `https://maps.google.com/maps?q=${validLat},${validLng}&t=&z=16&ie=UTF8&iwloc=&output=embed`;
+
+        if (iframe) {
+            iframe.src = mapUrl;
+        }
+        if (extLink) {
+            extLink.href = `https://www.google.com/maps?q=${validLat},${validLng}`;
+        }
+    },
+
+    useCurrentGpsLocation() {
+        if (!navigator.geolocation) {
+            alert("Aapka device/browser Geolocation support nahi karta. Manually Latitude aur Longitude darj karein.");
+            return;
+        }
+
+        const confirmGps = confirm("Kya aap mojooda device ki live GPS location se pin set karna chahte hain?");
+        if (!confirmGps) return;
+
+        navigator.geolocation.getCurrentPosition(
+            (pos) => {
+                const lat = Number(pos.coords.latitude.toFixed(6));
+                const lng = Number(pos.coords.longitude.toFixed(6));
+                const latInput = document.getElementById('settingWarehouseLat');
+                const lngInput = document.getElementById('settingWarehouseLng');
+                if (latInput) latInput.value = lat;
+                if (lngInput) lngInput.value = lng;
+                this.updateAdminMapPreview(lat, lng);
+                alert(`Location mil gayi!\nLatitude: ${lat}\nLongitude: ${lng}\n\nAb "Settings Save Karein" button daba kar save karein.`);
+            },
+            (err) => {
+                let msg = "Live GPS location hasil nahi ho saki: ";
+                if (err.code === 1) msg += "Permission Denied. Browser me Location allow karein.";
+                else if (err.code === 2) msg += "Position Unavailable.";
+                else if (err.code === 3) msg += "Timeout error.";
+                else msg += err.message;
+                alert(msg);
+            },
+            { enableHighAccuracy: true, timeout: 10000, maximumAge: 0 }
+        );
     },
 
     saveSettingsForm(event) {
@@ -1117,8 +1178,15 @@ Aap website par apna PIN laga kar live order track kar sakte hain.
         settings.mapQuery = document.getElementById('settingMapQuery')?.value.trim() || settings.mapQuery;
         settings.timings = document.getElementById('settingTimings')?.value.trim() || settings.timings;
 
+        const latVal = parseFloat(document.getElementById('settingWarehouseLat')?.value);
+        const lngVal = parseFloat(document.getElementById('settingWarehouseLng')?.value);
+        if (!isNaN(latVal) && !isNaN(lngVal)) {
+            settings.warehouseLat = latVal;
+            settings.warehouseLng = lngVal;
+        }
+
         Store.saveSettings(settings);
-        alert("Settings, Contact Details aur Accounts save ho gaye.");
+        alert("Settings, Contact Details, Google Map Pin aur Accounts save ho gaye.");
         if (window.App) {
             App.applySettings();
         }

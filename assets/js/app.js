@@ -76,16 +76,21 @@ const App = {
         document.querySelectorAll('.contact-address-text').forEach(el => el.innerText = settings.address || 'Chungi Amer Sidhu, Ferozepur Road, Lahore, Pakistan');
         document.querySelectorAll('.contact-timings-text').forEach(el => el.innerText = settings.timings || 'Mon - Sat: 9:00 AM - 9:00 PM');
 
-        // Dynamic Google Maps Embed & Directions
+        // Dynamic Google Maps Embed & Directions (Exact Admin Pinned Location)
         const mapIframe = document.getElementById('contactGoogleMapIframe');
-        const mapQuery = settings.mapQuery || settings.address || 'Chungi Amer Sidhu, Ferozepur Road, Lahore';
+        const lat = settings.warehouseLat || 31.4550;
+        const lng = settings.warehouseLng || 74.3490;
+        const mapTarget = (settings.warehouseLat && settings.warehouseLng)
+            ? `${settings.warehouseLat},${settings.warehouseLng}`
+            : (settings.mapQuery || settings.address || 'Chungi Amer Sidhu, Ferozepur Road, Lahore');
+
         if (mapIframe) {
-            mapIframe.src = `https://maps.google.com/maps?q=${encodeURIComponent(mapQuery)}&t=&z=15&ie=UTF8&iwloc=&output=embed`;
+            mapIframe.src = `https://maps.google.com/maps?q=${encodeURIComponent(mapTarget)}&t=&z=16&ie=UTF8&iwloc=&output=embed`;
         }
 
         const btnDir = document.getElementById('btnContactDirections');
         if (btnDir) {
-            btnDir.href = `https://www.google.com/maps/dir/?api=1&destination=${encodeURIComponent(mapQuery)}`;
+            btnDir.href = `https://www.google.com/maps/dir/?api=1&destination=${encodeURIComponent(mapTarget)}`;
         }
 
         const mapAddrDisplay = document.getElementById('contactMapAddressDisplay');
@@ -95,7 +100,7 @@ const App = {
 
         const btnWaLoc = document.getElementById('btnContactWhatsAppLoc');
         if (btnWaLoc) {
-            btnWaLoc.href = `https://wa.me/${settings.whatsappNumber}?text=${encodeURIComponent('Assalam-o-Alaikum Bilal Decor Studio! Mujhe aapke warehouse ki live Google Maps location chahiye.')}`;
+            btnWaLoc.href = `https://wa.me/${settings.whatsappNumber}?text=${encodeURIComponent('Assalam-o-Alaikum Bilal Decor Studio! Mujhe aapke warehouse ki live Google Maps location chahiye: https://www.google.com/maps?q=' + encodeURIComponent(mapTarget))}`;
         }
     },
 

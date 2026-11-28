@@ -21,6 +21,8 @@ const defaultSettings = {
     email: "contact@bilaldecorstudio.com",
     address: "Chungi Amer Sidhu, Ferozepur Road, Lahore, Pakistan",
     mapQuery: "Chungi Amer Sidhu, Ferozepur Road, Lahore",
+    warehouseLat: 31.4550,
+    warehouseLng: 74.3490,
     timings: "Mon - Sat: 9:00 AM - 9:00 PM",
     jazzcash: {
         number: "0300-456043",
