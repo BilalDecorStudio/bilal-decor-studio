@@ -1087,6 +1087,10 @@ Aap website par apna PIN laga kar live order track kar sakte hain.
         if (document.getElementById('settingBankIban')) document.getElementById('settingBankIban').value = settings.bank.iban;
         if (document.getElementById('settingVideo1Url')) document.getElementById('settingVideo1Url').value = settings.headerVideos.video1.url;
         if (document.getElementById('settingVideo2Url')) document.getElementById('settingVideo2Url').value = settings.headerVideos.video2.url;
+        if (document.getElementById('settingEmail')) document.getElementById('settingEmail').value = settings.email || 'contact@bilaldecorstudio.com';
+        if (document.getElementById('settingAddress')) document.getElementById('settingAddress').value = settings.address || 'Chungi Amer Sidhu, Ferozepur Road, Lahore, Pakistan';
+        if (document.getElementById('settingMapQuery')) document.getElementById('settingMapQuery').value = settings.mapQuery || settings.address || 'Chungi Amer Sidhu, Ferozepur Road, Lahore';
+        if (document.getElementById('settingTimings')) document.getElementById('settingTimings').value = settings.timings || 'Mon - Sat: 9:00 AM - 9:00 PM';
     },
 
     saveSettingsForm(event) {
@@ -1108,8 +1112,13 @@ Aap website par apna PIN laga kar live order track kar sakte hain.
         if (rawV1) settings.headerVideos.video1.url = (window.App && App.formatYouTubeEmbedUrl) ? App.formatYouTubeEmbedUrl(rawV1) : rawV1;
         if (rawV2) settings.headerVideos.video2.url = (window.App && App.formatYouTubeEmbedUrl) ? App.formatYouTubeEmbedUrl(rawV2) : rawV2;
 
+        settings.email = document.getElementById('settingEmail')?.value.trim() || settings.email;
+        settings.address = document.getElementById('settingAddress')?.value.trim() || settings.address;
+        settings.mapQuery = document.getElementById('settingMapQuery')?.value.trim() || settings.mapQuery;
+        settings.timings = document.getElementById('settingTimings')?.value.trim() || settings.timings;
+
         Store.saveSettings(settings);
-        alert("Settings aur Accounts save ho gaye.");
+        alert("Settings, Contact Details aur Accounts save ho gaye.");
         if (window.App) {
             App.applySettings();
         }

@@ -20,6 +20,8 @@ const defaultSettings = {
     phoneDisplay: "0300-456043",
     email: "contact@bilaldecorstudio.com",
     address: "Chungi Amer Sidhu, Ferozepur Road, Lahore, Pakistan",
+    mapQuery: "Chungi Amer Sidhu, Ferozepur Road, Lahore",
+    timings: "Mon - Sat: 9:00 AM - 9:00 PM",
     jazzcash: {
         number: "0300-456043",
         title: "Bilal Decor Studio"

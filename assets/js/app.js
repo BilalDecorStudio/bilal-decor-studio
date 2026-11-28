@@ -66,6 +66,37 @@ const App = {
         if (bankTitle) bankTitle.innerText = settings.bank.title;
         if (bankAcc) bankAcc.innerText = settings.bank.accountNo;
         if (bankIban) bankIban.innerText = settings.bank.iban;
+
+        // Dynamic Contact Page & Location updates
+        const phoneClean = (settings.phoneDisplay || '0300-456043').replace(/[^0-9+]/g, '');
+        document.querySelectorAll('.contact-phone-text').forEach(el => el.innerText = settings.phoneDisplay || '0300-456043');
+        document.querySelectorAll('.contact-phone-link').forEach(el => el.href = `tel:${phoneClean}`);
+        document.querySelectorAll('.contact-email-text').forEach(el => el.innerText = settings.email || 'contact@bilaldecorstudio.com');
+        document.querySelectorAll('.contact-email-link').forEach(el => el.href = `mailto:${settings.email || 'contact@bilaldecorstudio.com'}`);
+        document.querySelectorAll('.contact-address-text').forEach(el => el.innerText = settings.address || 'Chungi Amer Sidhu, Ferozepur Road, Lahore, Pakistan');
+        document.querySelectorAll('.contact-timings-text').forEach(el => el.innerText = settings.timings || 'Mon - Sat: 9:00 AM - 9:00 PM');
+
+        // Dynamic Google Maps Embed & Directions
+        const mapIframe = document.getElementById('contactGoogleMapIframe');
+        const mapQuery = settings.mapQuery || settings.address || 'Chungi Amer Sidhu, Ferozepur Road, Lahore';
+        if (mapIframe) {
+            mapIframe.src = `https://maps.google.com/maps?q=${encodeURIComponent(mapQuery)}&t=&z=15&ie=UTF8&iwloc=&output=embed`;
+        }
+
+        const btnDir = document.getElementById('btnContactDirections');
+        if (btnDir) {
+            btnDir.href = `https://www.google.com/maps/dir/?api=1&destination=${encodeURIComponent(mapQuery)}`;
+        }
+
+        const mapAddrDisplay = document.getElementById('contactMapAddressDisplay');
+        if (mapAddrDisplay) {
+            mapAddrDisplay.innerText = settings.address || 'Chungi Amer Sidhu, Ferozepur Road, Lahore, Pakistan';
+        }
+
+        const btnWaLoc = document.getElementById('btnContactWhatsAppLoc');
+        if (btnWaLoc) {
+            btnWaLoc.href = `https://wa.me/${settings.whatsappNumber}?text=${encodeURIComponent('Assalam-o-Alaikum Bilal Decor Studio! Mujhe aapke warehouse ki live Google Maps location chahiye.')}`;
+        }
     },
 
     bindEvents() {

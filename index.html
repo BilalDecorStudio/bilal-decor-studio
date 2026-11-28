@@ -43,10 +43,6 @@
 
     <!-- Chart.js for Business Sales Analytics & Graphs -->
     <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.1/dist/chart.umd.min.js"></script>
-
-    <!-- Leaflet.js for Interactive Live Map & Custom Pinning -->
-    <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" />
-    <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
 </head>
 <body class="bg-[#FDFBF8] text-slate-800 min-h-screen flex flex-col antialiased selection:bg-amber-100 selection:text-amber-900">
 
@@ -88,61 +84,71 @@
     <!-- ================================================= -->
     <!-- MAIN NAVIGATION HEADER -->
     <!-- ================================================= -->
-    <header class="sticky top-0 z-40 bg-white/95 backdrop-blur-md border-b border-amber-200/70 shadow-sm">
-        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 h-20 flex items-center justify-between">
+    <header class="sticky top-0 z-40 bg-white/95 backdrop-blur-md border-b border-amber-200/80 shadow-xs">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 h-18 sm:h-20 flex items-center justify-between gap-4">
             
             <!-- Brand Logo -->
-            <a href="#home" class="flex items-center space-x-3 group">
-                <img src="assets/images/logo.svg" alt="Bilal Decor Studio" class="h-12 sm:h-14 w-auto group-hover:scale-[1.02] transition">
+            <a href="#home" class="flex items-center space-x-3 group shrink-0">
+                <img src="assets/images/logo.svg" alt="Bilal Decor Studio" class="h-10 sm:h-12 w-auto group-hover:scale-[1.01] transition">
             </a>
 
-            <!-- Desktop Nav Menu (Simple, Natural Roman Urdu) -->
-            <nav class="hidden md:flex items-center space-x-1 lg:space-x-2 text-sm font-bold text-slate-700">
-                <a href="#home" class="px-3.5 py-2 rounded-xl hover:text-amber-800 hover:bg-amber-50/80 transition">
-                    Home Page
+            <!-- Desktop Nav Menu (Refined, Sleek & Balanced Luxury Links) -->
+            <nav class="hidden lg:flex items-center space-x-1 xl:space-x-2 text-[13.5px] font-semibold text-slate-700">
+                <a href="#home" class="px-3 py-1.5 rounded-lg hover:text-amber-800 hover:bg-amber-50/70 transition">
+                    Home
                 </a>
-                <a href="#catalog" class="px-3.5 py-2 rounded-xl hover:text-amber-800 hover:bg-amber-50/80 transition">
-                    Designs aur Rates
+                <a href="#catalog" class="px-3 py-1.5 rounded-lg hover:text-amber-800 hover:bg-amber-50/70 transition">
+                    Designs &amp; Rates
                 </a>
-                <a href="#calculator" class="px-3.5 py-2 rounded-xl hover:text-amber-800 hover:bg-amber-50/80 transition">
-                    Size aur Bill Calculator
+                <a href="#calculator" class="px-3 py-1.5 rounded-lg hover:text-amber-800 hover:bg-amber-50/70 transition">
+                    Calculator
                 </a>
-                <a href="#portfolio" class="px-3.5 py-2 rounded-xl hover:text-amber-800 hover:bg-amber-50/80 transition">
-                    Pichla Kaam aur Reviews
+                <a href="#portfolio" class="px-3 py-1.5 rounded-lg hover:text-amber-800 hover:bg-amber-50/70 transition">
+                    Kaam &amp; Reviews
                 </a>
-                <a href="#tracker" class="px-3.5 py-2 rounded-xl hover:text-amber-800 hover:bg-amber-50/80 transition">
-                    Order Status Check Karein
+                <a href="#tracker" class="px-3 py-1.5 rounded-lg hover:text-amber-800 hover:bg-amber-50/70 transition">
+                    Track Order
                 </a>
-                <a href="#contact" class="px-3.5 py-2 rounded-xl hover:text-amber-800 hover:bg-amber-50/80 transition font-bold text-amber-900 bg-amber-50/80 border border-amber-200/70 shadow-2xs">
-                    📍 Rabta &amp; Location
+                <a href="#contact" class="px-3 py-1.5 rounded-lg hover:text-amber-800 hover:bg-amber-50/70 transition text-amber-900 font-bold flex items-center space-x-1">
+                    <span>📍 Rabta &amp; Location</span>
                 </a>
             </nav>
 
             <!-- Header Action Buttons -->
-            <div class="flex items-center space-x-3">
+            <div class="flex items-center space-x-2 sm:space-x-3 shrink-0">
                 <!-- Cart Button with Live Badge -->
-                <button onclick="App.openCartModal()" class="relative p-2.5 rounded-xl bg-slate-50 hover:bg-amber-50 border border-slate-200 text-slate-700 hover:text-amber-800 transition shadow-sm" title="Cart Dekhein">
-                    <span class="text-lg">🛒</span>
+                <button onclick="App.openCartModal()" class="relative p-2.5 rounded-xl bg-slate-50 hover:bg-amber-50 border border-slate-200 text-slate-700 hover:text-amber-800 transition shadow-xs" title="Cart Dekhein">
+                    <span class="text-base sm:text-lg">🛒</span>
                     <span class="cart-count-badge hidden absolute -top-1.5 -right-1.5 w-5 h-5 rounded-full bg-[#0F172A] text-amber-300 text-[11px] font-extrabold flex items-center justify-center border border-amber-400">
                         0
                     </span>
                 </button>
 
-                <!-- WhatsApp Quick Order CTA (3D Tactile Button) -->
-                <a href="#" class="btn-whatsapp-dynamic btn-3d-emerald hidden sm:inline-flex items-center space-x-2 px-4 py-2.5 rounded-xl text-white font-extrabold text-xs shadow-md transition" target="_blank">
+                <!-- WhatsApp Quick Order CTA -->
+                <a href="#" class="btn-whatsapp-dynamic inline-flex items-center space-x-1.5 px-3.5 py-2 sm:px-4 sm:py-2.5 rounded-xl bg-emerald-600 hover:bg-emerald-700 text-white font-extrabold text-xs shadow-xs transition">
                     <span class="text-sm">💬</span>
-                    <span>WhatsApp Rabta</span>
+                    <span class="hidden sm:inline">WhatsApp Rabta</span>
                 </a>
 
                 <!-- Mobile Hamburger Button -->
-                <button onclick="App.toggleMobileMenu()" class="md:hidden p-2.5 rounded-xl bg-slate-100 border border-slate-200 text-slate-700 hover:text-slate-900">
+                <button onclick="App.toggleMobileMenu()" class="lg:hidden p-2 rounded-xl bg-slate-100 hover:bg-slate-200 border border-slate-200 text-slate-700">
                     <span class="text-xl">☰</span>
                 </button>
             </div>
         </div>
 
         <!-- Mobile Navigation Drawer -->
-        <div id="mobileNavDrawer" class="hidden md:hidden bg-white border-b border-amber-200 px-4 py-4 space-y-2 shadow-lg">
+        <div id="mobileNavDrawer" class="hidden lg:hidden bg-white border-b border-amber-200 px-4 py-4 space-y-2 shadow-lg">
+            <a href="#home" class="block px-3 py-2 rounded-lg text-sm font-bold text-slate-700 hover:text-amber-800 hover:bg-amber-50">Home Page</a>
+            <a href="#catalog" class="block px-3 py-2 rounded-lg text-sm font-bold text-slate-700 hover:text-amber-800 hover:bg-amber-50">Designs aur Square Feet Rates</a>
+            <a href="#calculator" class="block px-3 py-2 rounded-lg text-sm font-bold text-slate-700 hover:text-amber-800 hover:bg-amber-50">Size aur Bill Calculator</a>
+            <a href="#portfolio" class="block px-3 py-2 rounded-lg text-sm font-bold text-slate-700 hover:text-amber-800 hover:bg-amber-50">Pichla Kaam aur Reviews</a>
+            <a href="#tracker" class="block px-3 py-2 rounded-lg text-sm font-bold text-slate-700 hover:text-amber-800 hover:bg-amber-50">Order Status Check Karein</a>
+            <a href="#contact" class="block px-3 py-2 rounded-lg text-sm font-bold text-amber-900 bg-amber-50 hover:bg-amber-100">📍 Rabta &amp; Warehouse Location</a>
+            <a href="#karigar" class="block px-3 py-2 rounded-lg text-sm font-bold text-amber-900 bg-amber-50 hover:bg-amber-100">🪡 Karigar Portal (Hisaab-Kitab)</a>
+            <a href="#admin" class="block px-3 py-2 rounded-lg text-sm font-bold text-amber-800 hover:bg-amber-50">🔐 Admin Panel</a>
+        </div>
+    </header>
             <a href="#home" class="block px-3 py-2 rounded-lg text-sm font-bold text-slate-700 hover:text-amber-800 hover:bg-amber-50">Home Page</a>
             <a href="#catalog" class="block px-3 py-2 rounded-lg text-sm font-bold text-slate-700 hover:text-amber-800 hover:bg-amber-50">Designs aur Square Feet Rates</a>
             <a href="#calculator" class="block px-3 py-2 rounded-lg text-sm font-bold text-slate-700 hover:text-amber-800 hover:bg-amber-50">Size aur Bill Calculator</a>
@@ -731,11 +737,11 @@
                     <p class="text-xs text-slate-500 mb-4">Direct call karein ya WhatsApp par sample tasaveer aur rate list mangwayein.</p>
                     
                     <div class="space-y-2">
-                        <a href="tel:0300456043" class="flex items-center justify-between p-3 rounded-xl bg-slate-50 hover:bg-amber-50 border border-slate-200 text-slate-800 font-mono font-bold text-sm transition">
-                            <span>📱 0300-456043</span>
+                        <a href="tel:0300456043" class="contact-phone-link flex items-center justify-between p-3 rounded-xl bg-slate-50 hover:bg-amber-50 border border-slate-200 text-slate-800 font-mono font-bold text-sm transition">
+                            <span>📱 <span class="contact-phone-text">0300-456043</span></span>
                             <span class="text-xs text-amber-800 font-sans font-bold">Call Now ↗</span>
                         </a>
-                        <a href="https://wa.me/92300456043?text=Assalam-o-Alaikum%20Bilal%20Decor%20Studio,%20mujhe%20marquee%20decoration%20fabric%20rates%20aur%20warehouse%20visit%20karna%20hai." target="_blank" class="flex items-center justify-between p-3 rounded-xl bg-emerald-600 hover:bg-emerald-700 text-white font-bold text-sm transition shadow-xs">
+                        <a href="https://wa.me/92300456043?text=Assalam-o-Alaikum%20Bilal%20Decor%20Studio,%20mujhe%20marquee%20decoration%20fabric%20rates%20aur%20warehouse%20visit%20karna%20hai." target="_blank" class="btn-whatsapp-dynamic flex items-center justify-between p-3 rounded-xl bg-emerald-600 hover:bg-emerald-700 text-white font-bold text-sm transition shadow-xs">
                             <span class="flex items-center space-x-2">
                                 <span>💬 WhatsApp Rabta</span>
                             </span>
@@ -753,10 +759,10 @@
                     <p class="text-xs text-slate-500 mb-4">B2B commercial quotation, wholesale tenders, aur formal correspondence ke liye.</p>
                     
                     <div class="space-y-2">
-                        <a href="mailto:contact@bilaldecorstudio.com" class="flex items-center justify-between p-3 rounded-xl bg-slate-50 hover:bg-amber-50 border border-slate-200 text-slate-800 font-mono font-bold text-xs sm:text-sm transition break-all">
-                            <span>📧 contact@bilaldecorstudio.com</span>
+                        <a href="mailto:contact@bilaldecorstudio.com" class="contact-email-link flex items-center justify-between p-3 rounded-xl bg-slate-50 hover:bg-amber-50 border border-slate-200 text-slate-800 font-mono font-bold text-xs sm:text-sm transition break-all">
+                            <span>📧 <span class="contact-email-text">contact@bilaldecorstudio.com</span></span>
                         </a>
-                        <a href="mailto:contact@bilaldecorstudio.com?subject=B2B%20Marquee%20Ceilings%20Quotation%20Request" class="flex items-center justify-center space-x-2 p-3 rounded-xl bg-slate-900 hover:bg-slate-800 text-amber-300 font-bold text-xs transition">
+                        <a href="mailto:contact@bilaldecorstudio.com?subject=B2B%20Marquee%20Ceilings%20Quotation%20Request" class="contact-email-link flex items-center justify-center space-x-2 p-3 rounded-xl bg-slate-900 hover:bg-slate-800 text-amber-300 font-bold text-xs transition">
                             <span>Send Official Email ↗</span>
                         </a>
                     </div>
@@ -771,74 +777,66 @@
                     <p class="text-xs text-slate-500 mb-4">Direct workshop jahan fabric cutting, double stitching, aur manufacturing hoti hai.</p>
                     
                     <div class="p-3 rounded-xl bg-[#FAF8F5] border border-amber-200 text-xs text-slate-700 space-y-1">
-                        <p class="font-bold text-slate-900">📍 Chungi Amer Sidhu, Ferozepur Road</p>
-                        <p class="text-slate-600">Lahore, Punjab, Pakistan</p>
+                        <p class="font-bold text-slate-900">📍 <span class="contact-address-text">Chungi Amer Sidhu, Ferozepur Road, Lahore, Pakistan</span></p>
                         <div class="pt-1.5 border-t border-amber-200/80 flex items-center justify-between text-[11px]">
-                            <span class="text-emerald-800 font-bold">● Open: 9:00 AM - 9:00 PM</span>
+                            <span class="text-emerald-800 font-bold">● Open: <span class="contact-timings-text">9:00 AM - 9:00 PM</span></span>
                             <span class="text-slate-500">Mon - Sat</span>
                         </div>
                     </div>
                 </div>
             </div>
 
-            <!-- LIVE INTERACTIVE MAP & PINNING SECTION -->
-            <div class="bg-white rounded-3xl border border-amber-200 shadow-md overflow-hidden">
+            <!-- OFFICIAL GOOGLE MAPS EMBED SECTION (100% Reliable, Interactive & Familiar) -->
+            <div class="luxury-card rounded-3xl bg-white border border-amber-200 shadow-md overflow-hidden">
                 <!-- Map Toolbar Header -->
-                <div class="p-5 sm:p-6 bg-[#0F172A] text-white flex flex-col md:flex-row items-start md:items-center justify-between gap-4 border-b border-amber-500/20">
+                <div class="p-5 sm:p-6 bg-[#0F172A] text-white flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4 border-b border-amber-500/20">
                     <div>
                         <div class="flex items-center space-x-2">
-                            <span class="w-2.5 h-2.5 rounded-full bg-emerald-400 animate-ping"></span>
-                            <h2 class="text-lg sm:text-xl font-bold text-amber-300 font-serif-luxury">
-                                📍 Live Interactive Warehouse Map &amp; Exact Location Pin
-                            </h2>
+                            <span class="w-2.5 h-2.5 rounded-full bg-emerald-400 animate-pulse"></span>
+                            <span class="text-[11px] font-mono tracking-wider uppercase text-emerald-400 font-bold">LIVE GOOGLE MAPS LOCATION</span>
                         </div>
-                        <p class="text-xs text-slate-300 mt-1">
-                            Map par kisi bhi jagah click karein ya pin ko drag karke apni exact workshop/warehouse ki location pin karein.
+                        <h2 class="text-lg sm:text-xl font-bold text-amber-300 font-serif-luxury mt-0.5">
+                            📍 Bilal Decor Studio - Warehouse &amp; Workshop
+                        </h2>
+                        <p id="contactMapAddressDisplay" class="text-xs text-slate-300 mt-0.5 contact-address-text">
+                            Chungi Amer Sidhu, Ferozepur Road, Lahore, Pakistan
                         </p>
                     </div>
 
-                    <!-- Action Buttons: Save Pin, Directions, WhatsApp -->
+                    <!-- Visitor Action Buttons: Directions, WhatsApp Location -->
                     <div class="flex flex-wrap items-center gap-2">
-                        <button onclick="ContactMap.savePinnedLocation()" class="px-4 py-2 rounded-xl bg-amber-500 hover:bg-amber-600 text-slate-950 font-extrabold text-xs transition flex items-center space-x-1 shadow-sm" title="Pin ki hui exact location save karein">
-                            <span>📌 Save Exact Pin</span>
-                        </button>
-                        <button onclick="ContactMap.resetToDefault()" class="px-3.5 py-2 rounded-xl bg-slate-800 hover:bg-slate-700 text-slate-300 text-xs font-bold transition">
-                            <span>🔄 Reset Pin</span>
-                        </button>
-                        <a id="btnOpenGoogleMaps" href="https://www.google.com/maps?q=31.4550,74.3490" target="_blank" class="px-3.5 py-2 rounded-xl bg-emerald-600 hover:bg-emerald-700 text-white font-bold text-xs transition flex items-center space-x-1 shadow-sm">
-                            <span>🗺️ Google Maps Directions ↗</span>
+                        <a id="btnContactDirections" href="https://www.google.com/maps/dir/?api=1&destination=Chungi+Amer+Sidhu+Ferozepur+Road+Lahore" target="_blank" class="btn-3d-emerald px-4 py-2.5 rounded-xl text-white font-extrabold text-xs transition flex items-center space-x-1.5 shadow-sm">
+                            <span>🗺️ Google Maps Directions (Rasta) ↗</span>
+                        </a>
+                        <a id="btnContactWhatsAppLoc" href="https://wa.me/92300456043?text=Assalam-o-Alaikum%20Bilal%20Decor%20Studio!%20Mujhe%20aapke%20warehouse%20ki%20live%20Google%20Maps%20location%20bhejein." target="_blank" class="px-3.5 py-2.5 rounded-xl bg-slate-800 hover:bg-slate-700 text-amber-300 border border-amber-400/30 text-xs font-bold transition flex items-center space-x-1">
+                            <span>💬 WhatsApp Location</span>
                         </a>
                     </div>
                 </div>
 
-                <!-- Current Pinned Status Indicator Bar -->
-                <div class="px-6 py-2.5 bg-amber-50/80 border-b border-amber-200/80 flex flex-col sm:flex-row items-start sm:items-center justify-between text-xs text-amber-950 gap-2">
-                    <div class="flex items-center space-x-2">
-                        <span class="font-bold">📍 Current Pinned Location:</span>
-                        <span id="currentPinAddress" class="font-medium text-slate-800">Chungi Amer Sidhu, Ferozepur Road, Lahore</span>
-                    </div>
-                    <div class="flex items-center space-x-3 text-[11px] font-mono text-slate-600">
-                        <span>Lat: <strong id="currentPinLat" class="text-slate-900">31.455000</strong></span>
-                        <span>Lng: <strong id="currentPinLng" class="text-slate-900">74.349000</strong></span>
-                        <span id="pinSaveStatusBadge" class="hidden px-2 py-0.5 rounded bg-emerald-100 text-emerald-800 font-sans font-bold">✓ Saved</span>
-                    </div>
+                <!-- Google Maps Embedded Iframe -->
+                <div class="w-full h-[450px] sm:h-[520px] bg-slate-100 relative">
+                    <iframe 
+                        id="contactGoogleMapIframe"
+                        src="https://maps.google.com/maps?q=Chungi+Amer+Sidhu+Ferozepur+Road+Lahore&t=&z=15&ie=UTF8&iwloc=&output=embed"
+                        class="w-full h-full border-0"
+                        allowfullscreen="" 
+                        loading="lazy" 
+                        referrerpolicy="no-referrer-when-downgrade">
+                    </iframe>
                 </div>
 
-                <!-- Map Container -->
-                <div id="warehouseLiveMap" class="w-full h-[450px] sm:h-[500px] z-10" style="min-height: 450px; background: #e5e3df;">
-                    <!-- Map rendered by Leaflet -->
-                </div>
-
-                <!-- Map Footer Helper Note -->
-                <div class="p-4 bg-slate-50 border-t border-slate-200 text-xs text-slate-600 flex flex-col sm:flex-row justify-between items-center gap-2">
-                    <p>
-                        💡 <strong>Kaise Pin Karein:</strong> Map par pin ko pakar kar (drag) kisi bhi gali ya warehouse gate par rakh dein, phir uper <strong>"📌 Save Exact Pin"</strong> daba dein.
-                    </p>
+                <!-- Landmark & Visiting Helper Footer -->
+                <div class="p-4 sm:p-5 bg-[#FAF8F5] border-t border-amber-200/80 flex flex-col sm:flex-row items-center justify-between gap-3 text-xs text-slate-600">
                     <div class="flex items-center space-x-2">
-                        <button onclick="ContactMap.shareWhatsAppLocation()" class="text-emerald-700 hover:text-emerald-800 font-bold flex items-center space-x-1 text-xs">
-                            <span>📲 WhatsApp par Location Share Karein</span>
-                        </button>
+                        <span class="text-lg">🚇</span>
+                        <p>
+                            <strong>Aham Nishani (Landmark):</strong> Ferozepur Road par <strong>Chungi Amer Sidhu Metro Bus Station</strong> ke bilkul qareeb hamara central warehouse waqay hai.
+                        </p>
                     </div>
+                    <a href="tel:0300456043" class="contact-phone-link text-amber-800 hover:text-amber-900 font-bold whitespace-nowrap flex items-center space-x-1">
+                        <span>📞 Raste ke liye call karein: <span class="contact-phone-text font-mono">0300-456043</span></span>
+                    </a>
                 </div>
             </div>
 
@@ -1468,12 +1466,44 @@
                         <form onsubmit="Admin.saveSettingsForm(event)" class="space-y-6 text-xs">
                             <div class="grid grid-cols-1 sm:grid-cols-2 gap-4 pb-4 border-b border-slate-200">
                                 <div>
-                                    <label class="block text-slate-700 font-bold mb-1">Official WhatsApp Number (Baghair + ke, e.g. 923001234567)</label>
+                                    <label class="block text-slate-700 font-bold mb-1">Official WhatsApp Number (Baghair + ke, e.g. 92300456043)</label>
                                     <input type="text" id="settingWhatsapp" class="w-full bg-slate-50 border border-slate-300 text-slate-900 rounded-lg px-3 py-2">
                                 </div>
                                 <div>
                                     <label class="block text-slate-700 font-bold mb-1">Display Phone Number</label>
                                     <input type="text" id="settingPhone" class="w-full bg-slate-50 border border-slate-300 text-slate-900 rounded-lg px-3 py-2">
+                                </div>
+                            </div>
+
+                            <!-- Warehouse Location & Contact Details Section -->
+                            <div class="p-4 bg-amber-50/60 rounded-xl border border-amber-200/80 space-y-4">
+                                <div class="flex items-center space-x-2">
+                                    <span class="text-base">📍</span>
+                                    <h5 class="font-bold text-amber-950 text-sm">Warehouse Location &amp; Public Contact Details</h5>
+                                </div>
+                                <p class="text-slate-600 text-[11px]">
+                                    Yahan se aap jo bhi phone, email, ya warehouse address tabdeel karenge wo website ke Contact page, Google Maps, aur header/footer me foran update ho jayega.
+                                </p>
+                                <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                                    <div>
+                                        <label class="block text-slate-700 font-bold mb-1">Official Contact Email</label>
+                                        <input type="email" id="settingEmail" placeholder="contact@bilaldecorstudio.com" class="w-full bg-white border border-slate-300 text-slate-900 rounded-lg px-3 py-2">
+                                    </div>
+                                    <div>
+                                        <label class="block text-slate-700 font-bold mb-1">Visiting Timings</label>
+                                        <input type="text" id="settingTimings" placeholder="Mon - Sat: 9:00 AM - 9:00 PM" class="w-full bg-white border border-slate-300 text-slate-900 rounded-lg px-3 py-2">
+                                    </div>
+                                </div>
+                                <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                                    <div>
+                                        <label class="block text-slate-700 font-bold mb-1">Warehouse &amp; Workshop Address (Display)</label>
+                                        <input type="text" id="settingAddress" placeholder="Chungi Amer Sidhu, Ferozepur Road, Lahore" class="w-full bg-white border border-slate-300 text-slate-900 rounded-lg px-3 py-2">
+                                    </div>
+                                    <div>
+                                        <label class="block text-slate-700 font-bold mb-1">Google Maps Location / Search Query</label>
+                                        <input type="text" id="settingMapQuery" placeholder="Chungi Amer Sidhu, Ferozepur Road, Lahore" class="w-full bg-white border border-slate-300 text-slate-900 rounded-lg px-3 py-2">
+                                        <span class="text-[10px] text-slate-500 mt-0.5 block">Google Maps par jo jagah dikhani ho maslan: "Chungi Amer Sidhu, Ferozepur Road, Lahore"</span>
+                                    </div>
                                 </div>
                             </div>
 
@@ -2768,17 +2798,17 @@
     <!-- Scripts -->
     <script src="assets/js/popup.js?v=2.5"></script>
     <script src="assets/js/tilt3d.js?v=2.5"></script>
-    <script src="assets/js/data.js?v=2.5"></script>
+    <script src="assets/js/data.js?v=3.2"></script>
     <script src="assets/js/calculator.js?v=2.5"></script>
     <script src="assets/js/ai_scheduler.js?v=2.5"></script>
     <script src="assets/js/invoice.js?v=3.1"></script>
     <script src="assets/js/tracker.js?v=2.5"></script>
     <script src="assets/js/database.js?v=2.5"></script>
     <script src="assets/js/analytics.js?v=2.5"></script>
-    <script src="assets/js/admin.js?v=2.5"></script>
+    <script src="assets/js/admin.js?v=3.2"></script>
     <script src="assets/js/karigar.js?v=2.7"></script>
-    <script src="assets/js/contact.js?v=3.1"></script>
-    <script src="assets/js/app.js?v=2.5"></script>
+    <script src="assets/js/contact.js?v=3.2"></script>
+    <script src="assets/js/app.js?v=3.2"></script>
 
     <!-- Additional Standalone Calculator Page Helpers -->
     <script>
