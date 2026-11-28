@@ -32,7 +32,7 @@
     </script>
     
     <!-- Custom Stylesheet -->
-    <link rel="stylesheet" href="assets/css/style.css?v=3.0">
+    <link rel="stylesheet" href="assets/css/style.css?v=3.3">
     <link rel="icon" type="image/svg+xml" href="assets/images/logo-icon.svg">
 
     <!-- html2pdf.js for Client-Side PDF Generation -->
@@ -47,42 +47,31 @@
 <body class="bg-[#FDFBF8] text-slate-800 min-h-screen flex flex-col antialiased selection:bg-amber-100 selection:text-amber-900">
 
     <!-- ================================================= -->
-    <!-- TOP ANNOUNCEMENT BAR (Deep Midnight Slate & Gold Foil) -->
+    <!-- ================================================= -->
+    <!-- TOP ANNOUNCEMENT BAR (Clean, Single Luxury Announcement - No Duplicate Links) -->
     <!-- ================================================= -->
     <div class="bg-[#0F172A] text-amber-300 py-2 px-4 text-xs font-semibold border-b border-amber-500/20">
-        <div class="max-w-7xl mx-auto flex flex-col sm:flex-row items-center justify-between gap-1.5">
+        <div class="max-w-7xl mx-auto flex items-center justify-between gap-2">
             <div class="flex items-center space-x-2">
                 <span class="inline-block text-amber-400">✨</span>
-                <span class="tracking-wide text-slate-200">
-                    Marquee Decorators ke liye Wholesale B2B Rates | Poore Pakistan mein Tez Tareen Adda &amp; Cargo Delivery
+                <span class="tracking-wide text-slate-200 text-[11.5px]">
+                    Pakistan's Premium B2B Marquee Ceilings &amp; Stage Drapery Manufacturer • All Pakistan Cargo Delivery
                 </span>
             </div>
-            <div class="flex items-center space-x-4 text-slate-300">
-                <a href="tel:0300456043" id="topBarPhone" class="hover:text-amber-300 flex items-center space-x-1 font-mono font-bold">
+            <div class="hidden sm:flex items-center space-x-4 text-slate-300 text-[11.5px]">
+                <a href="tel:0300456043" id="topBarPhone" class="hover:text-amber-300 flex items-center space-x-1 font-mono font-bold text-amber-400">
                     <span>📞 0300-456043</span>
                 </a>
                 <span class="text-slate-600">|</span>
-                <a href="#contact" class="hover:text-amber-300 flex items-center space-x-1">
-                    <span>📍 Warehouse Location</span>
-                </a>
-                <span class="text-slate-600">|</span>
-                <a href="#tracker" class="hover:text-amber-300 flex items-center space-x-1">
-                    <span>📦 Order Track Karein</span>
-                </a>
-                <span class="text-slate-600">|</span>
-                <a href="#karigar" class="hover:text-amber-300 flex items-center space-x-1 font-bold text-amber-400">
-                    <span>🪡 Karigar Portal</span>
-                </a>
-                <span class="text-slate-600">|</span>
-                <a href="#admin" class="hover:text-amber-300 flex items-center space-x-1 font-bold">
-                    <span>🔐 Admin Portal</span>
+                <a href="#admin" class="hover:text-amber-300 flex items-center space-x-1 text-slate-400">
+                    <span>🔐 Admin Login</span>
                 </a>
             </div>
         </div>
     </div>
 
     <!-- ================================================= -->
-    <!-- MAIN NAVIGATION HEADER -->
+    <!-- MAIN NAVIGATION HEADER (The Single Source of Navigation) -->
     <!-- ================================================= -->
     <header class="sticky top-0 z-40 bg-white/95 backdrop-blur-md border-b border-amber-200/80 shadow-xs">
         <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 h-18 sm:h-20 flex items-center justify-between gap-4">
@@ -92,7 +81,7 @@
                 <img src="assets/images/logo.svg" alt="Bilal Decor Studio" class="h-10 sm:h-12 w-auto group-hover:scale-[1.01] transition">
             </a>
 
-            <!-- Desktop Nav Menu (Refined, Sleek & Balanced Luxury Links) -->
+            <!-- Desktop Nav Menu (Refined, Sleek & Balanced - Each Link Appears ONCE) -->
             <nav class="hidden lg:flex items-center space-x-1 xl:space-x-2 text-[13.5px] font-semibold text-slate-700">
                 <a href="#home" class="px-3 py-1.5 rounded-lg hover:text-amber-800 hover:bg-amber-50/70 transition">
                     Home
@@ -107,15 +96,20 @@
                     Kaam &amp; Reviews
                 </a>
                 <a href="#tracker" class="px-3 py-1.5 rounded-lg hover:text-amber-800 hover:bg-amber-50/70 transition">
-                    Track Order
+                    Order Status
                 </a>
-                <a href="#contact" class="px-3 py-1.5 rounded-lg hover:text-amber-800 hover:bg-amber-50/70 transition text-amber-900 font-bold flex items-center space-x-1">
-                    <span>📍 Rabta &amp; Location</span>
+                <a href="#contact" class="px-3 py-1.5 rounded-lg hover:text-amber-800 hover:bg-amber-50/70 transition">
+                    Rabta &amp; Location
                 </a>
             </nav>
 
             <!-- Header Action Buttons -->
             <div class="flex items-center space-x-2 sm:space-x-3 shrink-0">
+                <!-- Karigar Portal Link -->
+                <a href="#karigar" class="hidden sm:inline-flex items-center space-x-1 px-3 py-1.5 rounded-lg bg-amber-50 hover:bg-amber-100 text-amber-900 font-bold text-xs border border-amber-200 transition">
+                    <span>🪡 Karigar</span>
+                </a>
+
                 <!-- Cart Button with Live Badge -->
                 <button onclick="App.openCartModal()" class="relative p-2.5 rounded-xl bg-slate-50 hover:bg-amber-50 border border-slate-200 text-slate-700 hover:text-amber-800 transition shadow-xs" title="Cart Dekhein">
                     <span class="text-base sm:text-lg">🛒</span>
@@ -137,26 +131,18 @@
             </div>
         </div>
 
-        <!-- Mobile Navigation Drawer -->
-        <div id="mobileNavDrawer" class="hidden lg:hidden bg-white border-b border-amber-200 px-4 py-4 space-y-2 shadow-lg">
-            <a href="#home" class="block px-3 py-2 rounded-lg text-sm font-bold text-slate-700 hover:text-amber-800 hover:bg-amber-50">Home Page</a>
-            <a href="#catalog" class="block px-3 py-2 rounded-lg text-sm font-bold text-slate-700 hover:text-amber-800 hover:bg-amber-50">Designs aur Square Feet Rates</a>
-            <a href="#calculator" class="block px-3 py-2 rounded-lg text-sm font-bold text-slate-700 hover:text-amber-800 hover:bg-amber-50">Size aur Bill Calculator</a>
-            <a href="#portfolio" class="block px-3 py-2 rounded-lg text-sm font-bold text-slate-700 hover:text-amber-800 hover:bg-amber-50">Pichla Kaam aur Reviews</a>
-            <a href="#tracker" class="block px-3 py-2 rounded-lg text-sm font-bold text-slate-700 hover:text-amber-800 hover:bg-amber-50">Order Status Check Karein</a>
-            <a href="#contact" class="block px-3 py-2 rounded-lg text-sm font-bold text-amber-900 bg-amber-50 hover:bg-amber-100">📍 Rabta &amp; Warehouse Location</a>
-            <a href="#karigar" class="block px-3 py-2 rounded-lg text-sm font-bold text-amber-900 bg-amber-50 hover:bg-amber-100">🪡 Karigar Portal (Hisaab-Kitab)</a>
-            <a href="#admin" class="block px-3 py-2 rounded-lg text-sm font-bold text-amber-800 hover:bg-amber-50">🔐 Admin Panel</a>
-        </div>
-    </header>
-            <a href="#home" class="block px-3 py-2 rounded-lg text-sm font-bold text-slate-700 hover:text-amber-800 hover:bg-amber-50">Home Page</a>
-            <a href="#catalog" class="block px-3 py-2 rounded-lg text-sm font-bold text-slate-700 hover:text-amber-800 hover:bg-amber-50">Designs aur Square Feet Rates</a>
-            <a href="#calculator" class="block px-3 py-2 rounded-lg text-sm font-bold text-slate-700 hover:text-amber-800 hover:bg-amber-50">Size aur Bill Calculator</a>
-            <a href="#portfolio" class="block px-3 py-2 rounded-lg text-sm font-bold text-slate-700 hover:text-amber-800 hover:bg-amber-50">Pichla Kaam aur Reviews</a>
-            <a href="#tracker" class="block px-3 py-2 rounded-lg text-sm font-bold text-slate-700 hover:text-amber-800 hover:bg-amber-50">Order Status Check Karein</a>
-            <a href="#contact" class="block px-3 py-2 rounded-lg text-sm font-bold text-amber-900 bg-amber-50 hover:bg-amber-100">📍 Rabta &amp; Warehouse Location</a>
-            <a href="#karigar" class="block px-3 py-2 rounded-lg text-sm font-bold text-amber-900 bg-amber-50 hover:bg-amber-100">🪡 Karigar Portal (Hisaab-Kitab)</a>
-            <a href="#admin" class="block px-3 py-2 rounded-lg text-sm font-bold text-amber-800 hover:bg-amber-50">🔐 Admin Panel</a>
+        <!-- Mobile Navigation Drawer (Hidden on Desktop, Only opens on Mobile screen) -->
+        <div id="mobileNavDrawer" class="hidden lg:hidden bg-white border-b border-amber-200 px-4 py-3 space-y-1 shadow-xl">
+            <a href="#home" onclick="App.closeMobileMenu()" class="block px-3 py-2 rounded-lg text-sm font-semibold text-slate-700 hover:text-amber-800 hover:bg-amber-50">Home</a>
+            <a href="#catalog" onclick="App.closeMobileMenu()" class="block px-3 py-2 rounded-lg text-sm font-semibold text-slate-700 hover:text-amber-800 hover:bg-amber-50">Designs &amp; Rates</a>
+            <a href="#calculator" onclick="App.closeMobileMenu()" class="block px-3 py-2 rounded-lg text-sm font-semibold text-slate-700 hover:text-amber-800 hover:bg-amber-50">Calculator</a>
+            <a href="#portfolio" onclick="App.closeMobileMenu()" class="block px-3 py-2 rounded-lg text-sm font-semibold text-slate-700 hover:text-amber-800 hover:bg-amber-50">Kaam &amp; Reviews</a>
+            <a href="#tracker" onclick="App.closeMobileMenu()" class="block px-3 py-2 rounded-lg text-sm font-semibold text-slate-700 hover:text-amber-800 hover:bg-amber-50">Order Status</a>
+            <a href="#contact" onclick="App.closeMobileMenu()" class="block px-3 py-2 rounded-lg text-sm font-semibold text-slate-700 hover:text-amber-800 hover:bg-amber-50">Rabta &amp; Location</a>
+            <div class="pt-2 border-t border-slate-100 flex items-center justify-between text-xs">
+                <a href="#karigar" onclick="App.closeMobileMenu()" class="font-bold text-amber-900 bg-amber-50 px-3 py-1.5 rounded-lg border border-amber-200">🪡 Karigar Portal</a>
+                <a href="#admin" onclick="App.closeMobileMenu()" class="font-bold text-slate-700 hover:text-amber-800 px-3 py-1.5 rounded-lg">🔐 Admin Login</a>
+            </div>
         </div>
     </header>
 
